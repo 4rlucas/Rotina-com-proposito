@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Rotina — Foco no que importa</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --surface: #161618;
+    --surface2: #1e1e21;
+    --border: #2a2a2e;
+    --accent: #c8f060;
+    --accent2: #f0a060;
+    --text: #f0ede8;
+    --muted: #7a7880;
+    --danger: #ff6b6b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+
+  .nav-date {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    padding: 16px 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+  }
+
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* VIEWS */
+  .view { display: none; padding: 20px; }
+  .view.active { display: block; }
+
+  /* PROPÓSITO BANNER */
+  .proposito-banner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.5;
+    position: relative;
+  }
+
+  .proposito-banner small {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  /* PROGRESSO DO DIA */
+  .progress-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 14px;
+  }
+
+  .progress-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .progress-pct {
+    font-family: 'Fraunces', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .progress-bar-bg {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .progress-sub {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  /* REWARD BADGE */
+  .reward-badge {
+    display: none;
+    background: linear-gradient(135deg, #c8f060 0%, #a0d040 100%);
+    color: #0d0d0f;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-align: center;
+  }
+
+  .reward-badge.show { display: block; }
+
+  .reward-badge .reward-emoji {
+    font-size: 1.8rem;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* TASKS */
+  .section-title {
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .task-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .task-item:active { transform: scale(0.98); }
+
+  .task-item.done {
+    border-color: transparent;
+    background: rgba(200, 240, 96, 0.07);
+  }
+
+  .task-check {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+    font-size: 0.75rem;
+  }
+
+  .task-item.done .task-check {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0d0d0f;
+  }
+
+  .task-content { flex: 1; min-width: 0; }
+
+  .task-name {
+    font-size: 0.9rem;
+    color: var(--text);
+    transition: color 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .task-item.done .task-name {
+    color: var(--muted);
+    text-decoration: line-through;
+  }
+
+  .task-time {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .task-delete {
+    background: none;
+    border: none;
+    color: var(--border);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+
+  .task-delete:hover { color: var(--danger); }
+
+  /* ADD TASK */
+  .add-task-area {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+
+  .add-task-area input, .add-task-area select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .add-task-area input:focus, .add-task-area select:focus {
+    border-color: var(--accent);
+  }
+
+  .add-task-area input::placeholder { color: var(--muted); }
+
+  .add-task-area select option { background: var(--surface2); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0d0d0f;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn-primary:hover { background: #b8e050; }
+
+  .btn-ghost {
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  /* DASHBOARD */
+  .dash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .dash-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .dash-card.full { grid-column: span 2; }
+
+  .dash-metric {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .dash-metric-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* WEEKLY */
+  .week-grid {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .week-day {
+    flex: 1;
+    text-align: center;
+  }
+
+  .week-day-label {
+    font-size: 0.6rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .week-day-bar-bg {
+    height: 60px;
+    background: var(--surface2);
+    border-radius: 4px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .week-day-bar-fill {
+    width: 100%;
+    background: var(--accent);
+    border-radius: 4px;
+    opacity: 0.7;
+    transition: height 0.5s ease;
+  }
+
+  .week-day-pct {
+    font-size: 0.6rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* STREAKS */
+  .streak-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .streak-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    color: var(--muted);
+  }
+
+  .streak-dot.hit { background: var(--accent); border-color: var(--accent); color: #0d0d0f; font-size: 0.7rem; }
+
+  /* PROPÓSITO EDIT */
+  .proposito-edit {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .proposito-edit textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    padding: 12px;
+    min-height: 100px;
+    resize: none;
+    outline: none;
+    line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+
+  .proposito-edit textarea:focus { border-color: var(--accent); }
+
+  /* CELEBRATION */
+  .celebration {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 999;
+    overflow: hidden;
+  }
+
+  .confetti-piece {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    animation: fall 2s ease-in forwards;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+  }
+
+  .empty-state .icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .empty-state p { font-size: 0.85rem; line-height: 1.6; }
+
+  .toggle-add { display: none; }
+  .toggle-add.show { display: block; }
+
+  /* RESET BTN */
+  .reset-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.72rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .reset-btn:hover { border-color: var(--danger); color: var(--danger); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Rotina</div>
+  <div class="nav-date" id="navDate"></div>
+</nav>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('hoje')">Hoje</button>
+  <button class="tab" onclick="showTab('dashboard')">Dashboard</button>
+  <button class="tab" onclick="showTab('config')">Configurar</button>
+</div>
+
+<!-- VIEW: HOJE -->
+<div class="view active" id="view-hoje">
+  <div class="proposito-banner" id="propositoBanner">
+    <small>Seu propósito</small>
+    <span id="propositoText">Toque em "Configurar" para definir seu propósito ✨</span>
+  </div>
+
+  <div class="reward-badge" id="rewardBadge">
+    <span class="reward-emoji">🏆</span>
+    <strong>Dia completo!</strong> Você cumpriu tudo que se propôs hoje. Isso é disciplina de verdade.
+  </div>
+
+  <div class="progress-card">
+    <div class="progress-header">
+      <div>
+        <div class="progress-label">Progresso do dia</div>
+        <div class="progress-pct" id="progressPct">0%</div>
+      </div>
+      <button class="reset-btn" onclick="resetDay()">↺ Reiniciar dia</button>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+    </div>
+    <div class="progress-sub" id="progressSub">0 de 0 tarefas concluídas</div>
+  </div>
+
+  <div class="section-title">
+    Tarefas de hoje
+    <button class="btn btn-ghost" style="padding:4px 10px; font-size:0.72rem;" onclick="toggleAddToday()">+ adicionar</button>
+  </div>
+
+  <div class="add-task-area toggle-add" id="addTodayArea">
+    <input type="text" id="newTaskName" placeholder="Ex: Ler por 20 minutos" />
+    <input type="text" id="newTaskTime" placeholder="Horário (opcional, ex: 07:00)" />
+    <button class="btn btn-primary" onclick="addTask()">Adicionar tarefa</button>
+  </div>
+
+  <div class="tasks-list" id="tasksList">
+    <div class="empty-state">
+      <div class="icon">📋</div>
+      <p>Nenhuma tarefa ainda.<br>Adicione sua rotina ou configure tarefas padrão.</p>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW: DASHBOARD -->
+<div class="view" id="view-dashboard">
+  <div class="dash-grid">
+    <div class="dash-card">
+      <div class="dash-metric" id="dashHoje">0%</div>
+      <div class="dash-metric-label">Hoje</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-metric" id="dashStreak">0</div>
+      <div class="dash-metric-label">Dias seguidos 🔥</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-metric" id="dashSemana">0</div>
+      <div class="dash-metric-label">Dias completos essa semana</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-metric" id="dashMedia">0%</div>
+      <div class="dash-metric-label">Média da semana</div>
+    </div>
+    <div class="dash-card full">
+      <div class="section-title" style="margin-bottom:8px;">Semana atual</div>
+      <div class="week-grid" id="weekGrid"></div>
+    </div>
+    <div class="dash-card full">
+      <div class="section-title" style="margin-bottom:8px;">Últimos 14 dias</div>
+      <div class="streak-row" id="streakRow"></div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW: CONFIG -->
+<div class="view" id="view-config">
+  <div class="section-title" style="margin-bottom:12px;">Seu propósito</div>
+  <div class="proposito-edit">
+    <textarea id="propositoInput" placeholder="Escreva por que você quer manter uma rotina. Ex: Quero ser disciplinado para construir a vida que imagino para mim."></textarea>
+    <button class="btn btn-primary" onclick="savePurpose()">Salvar propósito</button>
+  </div>
+
+  <div class="section-title" style="margin-bottom:12px; margin-top:20px;">
+    Tarefas padrão da rotina
+    <button class="btn btn-ghost" style="padding:4px 10px; font-size:0.72rem;" onclick="toggleAddDefault()">+ nova</button>
+  </div>
+
+  <div class="add-task-area toggle-add" id="addDefaultArea">
+    <input type="text" id="defaultTaskName" placeholder="Ex: Meditar por 10 minutos" />
+    <input type="text" id="defaultTaskTime" placeholder="Horário (opcional)" />
+    <button class="btn btn-primary" onclick="addDefaultTask()">Adicionar à rotina padrão</button>
+  </div>
+
+  <div class="tasks-list" id="defaultTasksList"></div>
+
+  <button class="btn btn-primary" style="margin-top:8px;" onclick="applyDefaultToToday()">
+    ✓ Aplicar rotina padrão no dia de hoje
+  </button>
+</div>
+
+<div class="celebration" id="celebration"></div>
+
+<script>
+// ===== STATE =====
+const DAYS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+let state = JSON.parse(localStorage.getItem('rotina_state') || '{}');
+
+function getToday() {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+}
+
+function ensureToday() {
+  const today = getToday();
+  if (!state.days) state.days = {};
+  if (!state.days[today]) {
+    state.days[today] = { tasks: [], completed: [] };
+    // auto-apply default tasks if day is new and defaults exist
+    if (state.defaultTasks && state.defaultTasks.length > 0) {
+      state.days[today].tasks = JSON.parse(JSON.stringify(state.defaultTasks));
+    }
+  }
+}
+
+function save() {
+  localStorage.setItem('rotina_state', JSON.stringify(state));
+}
+
+// ===== TABS =====
+function showTab(tab) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('view-' + tab).classList.add('active');
+  event.target.classList.add('active');
+  if (tab === 'dashboard') renderDashboard();
+  if (tab === 'config') renderDefaultTasks();
+}
+
+// ===== NAV DATE =====
+function renderDate() {
+  const d = new Date();
+  const days = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  const months = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  document.getElementById('navDate').textContent = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
+}
+
+// ===== TASKS =====
+function getTodayTasks() {
+  ensureToday();
+  return state.days[getToday()];
+}
+
+function renderTasks() {
+  const { tasks, completed } = getTodayTasks();
+  const list = document.getElementById('tasksList');
+  
+  if (tasks.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="icon">📋</div><p>Nenhuma tarefa ainda.<br>Adicione tarefas ou configure sua rotina padrão.</p></div>`;
+    updateProgress(0, 0);
+    return;
+  }
+
+  list.innerHTML = tasks.map((t, i) => {
+    const done = completed.includes(i);
+    return `
+      <div class="task-item ${done ? 'done' : ''}" onclick="toggleTask(${i})">
+        <div class="task-check">${done ? '✓' : ''}</div>
+        <div class="task-content">
+          <div class="task-name">${t.name}</div>
+          ${t.time ? `<div class="task-time">⏰ ${t.time}</div>` : ''}
+        </div>
+        <button class="task-delete" onclick="deleteTask(event,${i})">✕</button>
+      </div>
+    `;
+  }).join('');
+
+  updateProgress(completed.length, tasks.length);
+}
+
+function toggleTask(i) {
+  const day = getTodayTasks();
+  const idx = day.completed.indexOf(i);
+  if (idx === -1) {
+    day.completed.push(i);
+  } else {
+    day.completed.splice(idx, 1);
+  }
+  save();
+  renderTasks();
+  checkReward();
+}
+
+function deleteTask(e, i) {
+  e.stopPropagation();
+  const day = getTodayTasks();
+  day.tasks.splice(i, 1);
+  day.completed = day.completed.filter(c => c !== i).map(c => c > i ? c - 1 : c);
+  save();
+  renderTasks();
+}
+
+function addTask() {
+  const name = document.getElementById('newTaskName').value.trim();
+  if (!name) return;
+  const time = document.getElementById('newTaskTime').value.trim();
+  const day = getTodayTasks();
+  day.tasks.push({ name, time });
+  save();
+  document.getElementById('newTaskName').value = '';
+  document.getElementById('newTaskTime').value = '';
+  renderTasks();
+}
+
+function resetDay() {
+  if (!confirm('Zerar progresso de hoje?')) return;
+  const day = getTodayTasks();
+  day.completed = [];
+  save();
+  renderTasks();
+  document.getElementById('rewardBadge').classList.remove('show');
+}
+
+function toggleAddToday() {
+  document.getElementById('addTodayArea').classList.toggle('show');
+}
+
+// ===== PROGRESS =====
+function updateProgress(done, total) {
+  const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressSub').textContent = `${done} de ${total} tarefas concluídas`;
+}
+
+function checkReward() {
+  const { tasks, completed } = getTodayTasks();
+  const badge = document.getElementById('rewardBadge');
+  if (tasks.length > 0 && completed.length === tasks.length) {
+    badge.classList.add('show');
+    celebrate();
+    // record full day
+    const today = getToday();
+    if (!state.fullDays) state.fullDays = [];
+    if (!state.fullDays.includes(today)) {
+      state.fullDays.push(today);
+      save();
+    }
+  } else {
+    badge.classList.remove('show');
+  }
+}
+
+// ===== CELEBRATE =====
+function celebrate() {
+  const c = document.getElementById('celebration');
+  c.innerHTML = '';
+  const colors = ['#c8f060','#f0a060','#60c8f0','#f060a0','#f0f060'];
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      top:-10px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-delay:${Math.random()*0.8}s;
+      animation-duration:${1.5+Math.random()}s;
+    `;
+    c.appendChild(p);
+  }
+  setTimeout(() => c.innerHTML = '', 3000);
+}
+
+// ===== PURPOSE =====
+function savePurpose() {
+  state.purpose = document.getElementById('propositoInput').value.trim();
+  save();
+  renderPurpose();
+  alert('Propósito salvo! 🌟');
+}
+
+function renderPurpose() {
+  const el = document.getElementById('propositoText');
+  const input = document.getElementById('propositoInput');
+  if (state.purpose) {
+    el.textContent = state.purpose;
+    input.value = state.purpose;
+  }
+}
+
+// ===== DEFAULT TASKS =====
+function renderDefaultTasks() {
+  const list = document.getElementById('defaultTasksList');
+  const tasks = state.defaultTasks || [];
+  if (tasks.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="icon">🌅</div><p>Adicione tarefas que você quer fazer todo dia.</p></div>`;
+    return;
+  }
+  list.innerHTML = tasks.map((t, i) => `
+    <div class="task-item">
+      <div class="task-check" style="border-color:#c8f060; color:#c8f060;">★</div>
+      <div class="task-content">
+        <div class="task-name">${t.name}</div>
+        ${t.time ? `<div class="task-time">⏰ ${t.time}</div>` : ''}
+      </div>
+      <button class="task-delete" onclick="deleteDefaultTask(${i})">✕</button>
+    </div>
+  `).join('');
+}
+
+function addDefaultTask() {
+  const name = document.getElementById('defaultTaskName').value.trim();
+  if (!name) return;
+  const time = document.getElementById('defaultTaskTime').value.trim();
+  if (!state.defaultTasks) state.defaultTasks = [];
+  state.defaultTasks.push({ name, time });
+  save();
+  document.getElementById('defaultTaskName').value = '';
+  document.getElementById('defaultTaskTime').value = '';
+  renderDefaultTasks();
+}
+
+function deleteDefaultTask(i) {
+  state.defaultTasks.splice(i, 1);
+  save();
+  renderDefaultTasks();
+}
+
+function toggleAddDefault() {
+  document.getElementById('addDefaultArea').classList.toggle('show');
+}
+
+function applyDefaultToToday() {
+  const defaults = state.defaultTasks || [];
+  if (defaults.length === 0) { alert('Adicione tarefas padrão primeiro.'); return; }
+  const day = getTodayTasks();
+  day.tasks = JSON.parse(JSON.stringify(defaults));
+  day.completed = [];
+  save();
+  renderTasks();
+  alert(`${defaults.length} tarefas aplicadas para hoje! 🚀`);
+}
+
+// ===== DASHBOARD =====
+function renderDashboard() {
+  const { tasks, completed } = getTodayTasks();
+  const todayPct = tasks.length === 0 ? 0 : Math.round((completed.length / tasks.length) * 100);
+  document.getElementById('dashHoje').textContent = todayPct + '%';
+
+  // Week days
+  const now = new Date();
+  const weekData = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    const dayData = state.days && state.days[key];
+    let pct = 0;
+    if (dayData && dayData.tasks.length > 0) {
+      pct = Math.round((dayData.completed.length / dayData.tasks.length) * 100);
+    }
+    weekData.push({ label: DAYS[d.getDay()], pct, full: pct === 100 });
+  }
+
+  document.getElementById('weekGrid').innerHTML = weekData.map(d => `
+    <div class="week-day">
+      <div class="week-day-label">${d.label}</div>
+      <div class="week-day-bar-bg">
+        <div class="week-day-bar-fill" style="height:${d.pct}%"></div>
+      </div>
+      <div class="week-day-pct">${d.pct}%</div>
+    </div>
+  `).join('');
+
+  const completeDays = weekData.filter(d => d.full).length;
+  document.getElementById('dashSemana').textContent = completeDays;
+
+  const avg = weekData.length ? Math.round(weekData.reduce((s, d) => s + d.pct, 0) / weekData.length) : 0;
+  document.getElementById('dashMedia').textContent = avg + '%';
+
+  // Streak
+  let streak = 0;
+  const fullDays = state.fullDays || [];
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    if (fullDays.includes(key)) streak++;
+    else break;
+  }
+  document.getElementById('dashStreak').textContent = streak;
+
+  // Last 14 days dots
+  const dots = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    const hit = fullDays.includes(key);
+    dots.push(`<div class="streak-dot ${hit ? 'hit' : ''}" title="${key}">${hit ? '✓' : DAYS[d.getDay()][0]}</div>`);
+  }
+  document.getElementById('streakRow').innerHTML = dots.join('');
+}
+
+// ===== INIT =====
+renderDate();
+ensureToday();
+renderPurpose();
+renderTasks();
+checkReward();
+</script>
+</body>
+</html>
