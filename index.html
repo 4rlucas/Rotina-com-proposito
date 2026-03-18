@@ -287,6 +287,48 @@
 
   .task-delete:hover { color: var(--danger); }
 
+  .task-edit {
+    background: none;
+    border: none;
+    color: var(--border);
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+  .task-edit:hover { color: var(--accent); }
+
+  /* INLINE EDIT FORM */
+  .task-edit-form {
+    background: var(--surface2);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: popIn 0.2s ease;
+  }
+  .task-edit-form input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .task-edit-form input:focus { border-color: var(--accent); }
+  .task-edit-form input::placeholder { color: var(--muted); }
+  .task-edit-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 2px;
+  }
+
   /* ADD TASK */
   .add-task-area {
     background: var(--surface);
@@ -522,6 +564,272 @@
   }
 
   .reset-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+  /* SUGGESTION BANNER */
+  .suggestion-banner {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .suggestion-banner.show { display: block; }
+  .suggestion-banner-title {
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+  .suggestion-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+  .suggestion-task {
+    font-size: 0.82rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .suggestion-task::before {
+    content: '·';
+    color: var(--accent);
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+  .suggestion-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  /* CATEGORY TAGS */
+  .cat-tag {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .cat-saude    { background: rgba(96,200,160,0.18); color: #60c8a0; }
+  .cat-trabalho { background: rgba(96,160,240,0.18); color: #60a0f0; }
+  .cat-pessoal  { background: rgba(240,160,96,0.18); color: var(--accent2); }
+  .cat-habito   { background: rgba(200,240,96,0.18); color: var(--accent); }
+  .cat-financas { background: rgba(240,208,96,0.18); color: #f0d060; }
+  .cat-estudo   { background: rgba(240,96,200,0.18); color: #f060c8; }
+  .cat-outro    { background: rgba(180,140,240,0.18); color: #b48cf0; }
+
+  /* CAT SELECT in add-task-area */
+  .cat-select-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .cat-btn {
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    font-size: 0.72rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .cat-btn.selected { border-color: currentColor; }
+  .cat-btn[data-cat="saude"].selected    { color: #60c8a0; background: rgba(96,200,160,0.15); }
+  .cat-btn[data-cat="trabalho"].selected { color: #60a0f0; background: rgba(96,160,240,0.15); }
+  .cat-btn[data-cat="pessoal"].selected  { color: var(--accent2); background: rgba(240,160,96,0.15); }
+  .cat-btn[data-cat="habito"].selected   { color: var(--accent); background: rgba(200,240,96,0.15); }
+  .cat-btn[data-cat="financas"].selected { color: #f0d060; background: rgba(240,208,96,0.15); }
+  .cat-btn[data-cat="estudo"].selected   { color: #f060c8; background: rgba(240,96,200,0.15); }
+  .cat-btn[data-cat="outro"].selected    { color: #b48cf0; background: rgba(180,140,240,0.15); }
+
+  /* PRIORITY BADGES */
+  .prio-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    letter-spacing: 0;
+  }
+  .prio-A { background: rgba(255,100,100,0.18); color: #ff6464; }
+  .prio-B { background: rgba(240,160,96,0.18);  color: #f0a060; }
+  .prio-C { background: rgba(200,240,96,0.18);  color: #c8f060; }
+  .prio-D { background: rgba(96,160,240,0.18);  color: #60a0f0; }
+  .prio-E { background: rgba(120,120,140,0.18); color: #88889a; }
+
+  /* PRIORITY SELECTOR */
+  .prio-select-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .prio-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 7px 11px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    font-size: 0.72rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 80px;
+  }
+  .prio-btn .prio-letter {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .prio-btn .prio-desc { font-size: 0.6rem; line-height: 1.3; color: var(--muted); }
+  .prio-btn.selected { border-color: currentColor; }
+  .prio-btn[data-prio="A"].selected { color: #ff6464; background: rgba(255,100,100,0.12); }
+  .prio-btn[data-prio="B"].selected { color: #f0a060; background: rgba(240,160,96,0.12); }
+  .prio-btn[data-prio="C"].selected { color: #c8f060; background: rgba(200,240,96,0.12); }
+  .prio-btn[data-prio="D"].selected { color: #60a0f0; background: rgba(96,160,240,0.12); }
+  .prio-btn[data-prio="E"].selected { color: #88889a; background: rgba(120,120,140,0.12); }
+
+  /* WEAKNESS CARD */
+  .weakness-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .weakness-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .weakness-name {
+    flex: 1;
+    font-size: 0.82rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .weakness-bar-bg {
+    width: 80px;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 3px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .weakness-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--danger);
+    opacity: 0.7;
+    transition: width 0.5s ease;
+  }
+  .weakness-pct {
+    font-size: 0.72rem;
+    color: var(--muted);
+    width: 30px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* CAT STATS */
+  .cat-stats-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .cat-stat-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .cat-stat-label {
+    width: 72px;
+    flex-shrink: 0;
+  }
+  .cat-stat-bar-bg {
+    flex: 1;
+    height: 8px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .cat-stat-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+  .cat-stat-pct {
+    font-size: 0.72rem;
+    color: var(--muted);
+    width: 34px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* PRIORITY GUIDE */
+  .prio-guide {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .prio-guide-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .prio-guide-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .prio-guide-body { flex: 1; }
+  .prio-guide-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .prio-guide-question {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    line-height: 1.5;
+  }
 </style>
 </head>
 <body>
@@ -542,6 +850,15 @@
   <div class="proposito-banner" id="propositoBanner">
     <small>Seu propósito</small>
     <span id="propositoText">Toque em "Configurar" para definir seu propósito ✨</span>
+  </div>
+
+  <div class="suggestion-banner" id="suggestionBanner">
+    <div class="suggestion-banner-title">✨ Repetir de ontem?</div>
+    <div class="suggestion-tasks" id="suggestionTasks"></div>
+    <div class="suggestion-actions">
+      <button class="btn btn-primary" style="flex:1;" onclick="applySuggestion()">Sim, usar essas tarefas</button>
+      <button class="btn btn-ghost" onclick="dismissSuggestion()">Ignorar</button>
+    </div>
   </div>
 
   <div class="reward-badge" id="rewardBadge">
@@ -571,6 +888,24 @@
   <div class="add-task-area toggle-add" id="addTodayArea">
     <input type="text" id="newTaskName" placeholder="Ex: Ler por 20 minutos" />
     <input type="text" id="newTaskTime" placeholder="Horário (opcional, ex: 07:00)" />
+    <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Categoria</div>
+    <div class="cat-select-row" id="todayCatRow">
+      <button class="cat-btn" data-cat="saude" onclick="selectCat(this,'today')">🌿 Saúde</button>
+      <button class="cat-btn" data-cat="trabalho" onclick="selectCat(this,'today')">💼 Trabalho</button>
+      <button class="cat-btn" data-cat="pessoal" onclick="selectCat(this,'today')">🙂 Pessoal</button>
+      <button class="cat-btn" data-cat="habito" onclick="selectCat(this,'today')">⚡ Hábito</button>
+      <button class="cat-btn" data-cat="financas" onclick="selectCat(this,'today')">💰 Finanças</button>
+      <button class="cat-btn" data-cat="estudo" onclick="selectCat(this,'today')">📚 Estudo</button>
+      <button class="cat-btn" data-cat="outro" onclick="selectCat(this,'today')">• Outro</button>
+    </div>
+    <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Prioridade</div>
+    <div class="prio-select-row" id="todayPrioRow">
+      <button class="prio-btn" data-prio="A" onclick="selectPrio(this,'today')"><span class="prio-letter">A</span><span class="prio-desc">Alto impacto</span></button>
+      <button class="prio-btn" data-prio="B" onclick="selectPrio(this,'today')"><span class="prio-letter">B</span><span class="prio-desc">Urgente</span></button>
+      <button class="prio-btn" data-prio="C" onclick="selectPrio(this,'today')"><span class="prio-letter">C</span><span class="prio-desc">Baixo impacto</span></button>
+      <button class="prio-btn" data-prio="D" onclick="selectPrio(this,'today')"><span class="prio-letter">D</span><span class="prio-desc">Delegável</span></button>
+      <button class="prio-btn" data-prio="E" onclick="selectPrio(this,'today')"><span class="prio-letter">E</span><span class="prio-desc">Eliminável</span></button>
+    </div>
     <button class="btn btn-primary" onclick="addTask()">Adicionar tarefa</button>
   </div>
 
@@ -609,6 +944,14 @@
       <div class="section-title" style="margin-bottom:8px;">Últimos 14 dias</div>
       <div class="streak-row" id="streakRow"></div>
     </div>
+    <div class="dash-card full">
+      <div class="section-title" style="margin-bottom:4px;">⚠️ Onde falho mais <span style="font-size:0.65rem;color:var(--muted);font-weight:300;text-transform:none;letter-spacing:0;">(últimos 30 dias)</span></div>
+      <div class="weakness-list" id="weaknessList"></div>
+    </div>
+    <div class="dash-card full">
+      <div class="section-title" style="margin-bottom:4px;">📊 Por categoria <span style="font-size:0.65rem;color:var(--muted);font-weight:300;text-transform:none;letter-spacing:0;">(últimos 30 dias)</span></div>
+      <div class="cat-stats-grid" id="catStatsGrid"></div>
+    </div>
   </div>
 </div>
 
@@ -628,6 +971,24 @@
   <div class="add-task-area toggle-add" id="addDefaultArea">
     <input type="text" id="defaultTaskName" placeholder="Ex: Meditar por 10 minutos" />
     <input type="text" id="defaultTaskTime" placeholder="Horário (opcional)" />
+    <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Categoria</div>
+    <div class="cat-select-row" id="defaultCatRow">
+      <button class="cat-btn" data-cat="saude" onclick="selectCat(this,'default')">🌿 Saúde</button>
+      <button class="cat-btn" data-cat="trabalho" onclick="selectCat(this,'default')">💼 Trabalho</button>
+      <button class="cat-btn" data-cat="pessoal" onclick="selectCat(this,'default')">🙂 Pessoal</button>
+      <button class="cat-btn" data-cat="habito" onclick="selectCat(this,'default')">⚡ Hábito</button>
+      <button class="cat-btn" data-cat="financas" onclick="selectCat(this,'default')">💰 Finanças</button>
+      <button class="cat-btn" data-cat="estudo" onclick="selectCat(this,'default')">📚 Estudo</button>
+      <button class="cat-btn" data-cat="outro" onclick="selectCat(this,'default')">• Outro</button>
+    </div>
+    <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Prioridade</div>
+    <div class="prio-select-row" id="defaultPrioRow">
+      <button class="prio-btn" data-prio="A" onclick="selectPrio(this,'default')"><span class="prio-letter">A</span><span class="prio-desc">Alto impacto</span></button>
+      <button class="prio-btn" data-prio="B" onclick="selectPrio(this,'default')"><span class="prio-letter">B</span><span class="prio-desc">Urgente</span></button>
+      <button class="prio-btn" data-prio="C" onclick="selectPrio(this,'default')"><span class="prio-letter">C</span><span class="prio-desc">Baixo impacto</span></button>
+      <button class="prio-btn" data-prio="D" onclick="selectPrio(this,'default')"><span class="prio-letter">D</span><span class="prio-desc">Delegável</span></button>
+      <button class="prio-btn" data-prio="E" onclick="selectPrio(this,'default')"><span class="prio-letter">E</span><span class="prio-desc">Eliminável</span></button>
+    </div>
     <button class="btn btn-primary" onclick="addDefaultTask()">Adicionar à rotina padrão</button>
   </div>
 
@@ -636,6 +997,45 @@
   <button class="btn btn-primary" style="margin-top:8px;" onclick="applyDefaultToToday()">
     ✓ Aplicar rotina padrão no dia de hoje
   </button>
+
+  <div class="section-title" style="margin-bottom:12px; margin-top:28px;">Guia de prioridades</div>
+  <div class="prio-guide">
+    <div class="prio-guide-item">
+      <div class="prio-guide-badge" style="background:rgba(255,100,100,0.15);color:#ff6464;">A</div>
+      <div class="prio-guide-body">
+        <div class="prio-guide-title">Nível A — Alto Impacto</div>
+        <div class="prio-guide-question">Quais são suas atividades diárias que te trazem grandes resultados?</div>
+      </div>
+    </div>
+    <div class="prio-guide-item">
+      <div class="prio-guide-badge" style="background:rgba(240,160,96,0.15);color:#f0a060;">B</div>
+      <div class="prio-guide-body">
+        <div class="prio-guide-title">Nível B — Médio Impacto</div>
+        <div class="prio-guide-question">Quais tarefas são urgentes, mas exercem pouca influência na realização dos seus objetivos?</div>
+      </div>
+    </div>
+    <div class="prio-guide-item">
+      <div class="prio-guide-badge" style="background:rgba(200,240,96,0.15);color:#c8f060;">C</div>
+      <div class="prio-guide-body">
+        <div class="prio-guide-title">Nível C — Baixo Impacto</div>
+        <div class="prio-guide-question">Quais tarefas não são urgentes e trazem poucas consequências para a realização do seu sonho?</div>
+      </div>
+    </div>
+    <div class="prio-guide-item">
+      <div class="prio-guide-badge" style="background:rgba(96,160,240,0.15);color:#60a0f0;">D</div>
+      <div class="prio-guide-body">
+        <div class="prio-guide-title">Nível D — Delegáveis</div>
+        <div class="prio-guide-question">Quais tarefas você poderia delegar para outra pessoa fazer?</div>
+      </div>
+    </div>
+    <div class="prio-guide-item">
+      <div class="prio-guide-badge" style="background:rgba(120,120,140,0.15);color:#88889a;">E</div>
+      <div class="prio-guide-body">
+        <div class="prio-guide-title">Nível E — Elimináveis</div>
+        <div class="prio-guide-question">Onde você desperdiça seu tempo? O que te traz conforto mas não tem impacto na sua vida?</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="celebration" id="celebration"></div>
@@ -702,13 +1102,17 @@ function renderTasks() {
 
   list.innerHTML = tasks.map((t, i) => {
     const done = completed.includes(i);
+    const catHtml = t.cat ? `<span class="cat-tag cat-${t.cat}">${catLabel(t.cat)}</span>` : '';
+    const prioHtml = t.prio ? `<span class="prio-tag prio-${t.prio}">${t.prio}</span>` : '';
     return `
-      <div class="task-item ${done ? 'done' : ''}" onclick="toggleTask(${i})">
-        <div class="task-check">${done ? '✓' : ''}</div>
-        <div class="task-content">
+      <div class="task-item ${done ? 'done' : ''}" id="task-item-${i}">
+        <div class="task-check" onclick="toggleTask(${i})">${done ? '✓' : ''}</div>
+        <div class="task-content" onclick="toggleTask(${i})">
           <div class="task-name">${t.name}</div>
           ${t.time ? `<div class="task-time">⏰ ${t.time}</div>` : ''}
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:3px;">${prioHtml}${catHtml}</div>
         </div>
+        <button class="task-edit" onclick="startEditTask(event,${i})" title="Editar">✎</button>
         <button class="task-delete" onclick="deleteTask(event,${i})">✕</button>
       </div>
     `;
@@ -730,6 +1134,67 @@ function toggleTask(i) {
   checkReward();
 }
 
+function startEditTask(e, i) {
+  e.stopPropagation();
+  const { tasks } = getTodayTasks();
+  const t = tasks[i];
+  const catBtns = Object.entries(CATS).map(([key, label]) =>
+    `<button class="cat-btn${t.cat === key ? ' selected' : ''}" data-cat="${key}" onclick="selectEditCat(this)">${label}</button>`
+  ).join('');
+  const prioBtns = [
+    ['A','Alto impacto'], ['B','Urgente'], ['C','Baixo impacto'], ['D','Delegável'], ['E','Eliminável']
+  ].map(([key, desc]) =>
+    `<button class="prio-btn${t.prio === key ? ' selected' : ''}" data-prio="${key}" onclick="selectEditPrio(this)"><span class="prio-letter">${key}</span><span class="prio-desc">${desc}</span></button>`
+  ).join('');
+  const el = document.getElementById(`task-item-${i}`);
+  el.outerHTML = `
+    <div class="task-edit-form" id="task-edit-form-${i}">
+      <input type="text" id="edit-name-${i}" value="${t.name}" placeholder="Nome da tarefa" />
+      <input type="text" id="edit-time-${i}" value="${t.time || ''}" placeholder="Horário (ex: 07:00)" />
+      <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Prioridade</div>
+      <div class="prio-select-row" id="edit-prio-row-${i}">${prioBtns}</div>
+      <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Categoria</div>
+      <div class="cat-select-row" id="edit-cat-row-${i}">${catBtns}</div>
+      <div class="task-edit-actions">
+        <button class="btn btn-primary" style="flex:1;" onclick="saveEditTask(${i})">Salvar</button>
+        <button class="btn btn-ghost" onclick="renderTasks()">Cancelar</button>
+      </div>
+    </div>
+  `;
+}
+
+function selectPrio(btn, scope) {
+  const rowId = scope === 'today' ? 'todayPrioRow' : scope === 'default' ? 'defaultPrioRow' : btn.closest('.prio-select-row').id;
+  document.querySelectorAll(`#${rowId} .prio-btn`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function selectEditPrio(btn) {
+  const row = btn.closest('.prio-select-row');
+  row.querySelectorAll('.prio-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function selectEditCat(btn) {
+  const row = btn.closest('.cat-select-row');
+  row.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function saveEditTask(i) {
+  const name = document.getElementById(`edit-name-${i}`).value.trim();
+  if (!name) return;
+  const time = document.getElementById(`edit-time-${i}`).value.trim();
+  const catBtn = document.querySelector(`#edit-cat-row-${i} .cat-btn.selected`);
+  const cat = catBtn ? catBtn.dataset.cat : null;
+  const prioBtn = document.querySelector(`#edit-prio-row-${i} .prio-btn.selected`);
+  const prio = prioBtn ? prioBtn.dataset.prio : null;
+  const day = getTodayTasks();
+  day.tasks[i] = { ...day.tasks[i], name, time, cat, prio };
+  save();
+  renderTasks();
+}
+
 function deleteTask(e, i) {
   e.stopPropagation();
   const day = getTodayTasks();
@@ -743,11 +1208,17 @@ function addTask() {
   const name = document.getElementById('newTaskName').value.trim();
   if (!name) return;
   const time = document.getElementById('newTaskTime').value.trim();
+  const catBtn = document.querySelector('#todayCatRow .cat-btn.selected');
+  const cat = catBtn ? catBtn.dataset.cat : null;
+  const prioBtn = document.querySelector('#todayPrioRow .prio-btn.selected');
+  const prio = prioBtn ? prioBtn.dataset.prio : null;
   const day = getTodayTasks();
-  day.tasks.push({ name, time });
+  day.tasks.push({ name, time, cat, prio });
   save();
   document.getElementById('newTaskName').value = '';
   document.getElementById('newTaskTime').value = '';
+  document.querySelectorAll('#todayCatRow .cat-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('#todayPrioRow .prio-btn').forEach(b => b.classList.remove('selected'));
   renderTasks();
 }
 
@@ -841,6 +1312,10 @@ function renderDefaultTasks() {
       <div class="task-content">
         <div class="task-name">${t.name}</div>
         ${t.time ? `<div class="task-time">⏰ ${t.time}</div>` : ''}
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:3px;">
+          ${t.prio ? `<span class="prio-tag prio-${t.prio}">${t.prio}</span>` : ''}
+          ${t.cat ? `<span class="cat-tag cat-${t.cat}">${catLabel(t.cat)}</span>` : ''}
+        </div>
       </div>
       <button class="task-delete" onclick="deleteDefaultTask(${i})">✕</button>
     </div>
@@ -851,11 +1326,17 @@ function addDefaultTask() {
   const name = document.getElementById('defaultTaskName').value.trim();
   if (!name) return;
   const time = document.getElementById('defaultTaskTime').value.trim();
+  const catBtn = document.querySelector('#defaultCatRow .cat-btn.selected');
+  const cat = catBtn ? catBtn.dataset.cat : null;
+  const prioBtn = document.querySelector('#defaultPrioRow .prio-btn.selected');
+  const prio = prioBtn ? prioBtn.dataset.prio : null;
   if (!state.defaultTasks) state.defaultTasks = [];
-  state.defaultTasks.push({ name, time });
+  state.defaultTasks.push({ name, time, cat, prio });
   save();
   document.getElementById('defaultTaskName').value = '';
   document.getElementById('defaultTaskTime').value = '';
+  document.querySelectorAll('#defaultCatRow .cat-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('#defaultPrioRow .prio-btn').forEach(b => b.classList.remove('selected'));
   renderDefaultTasks();
 }
 
@@ -873,11 +1354,25 @@ function applyDefaultToToday() {
   const defaults = state.defaultTasks || [];
   if (defaults.length === 0) { alert('Adicione tarefas padrão primeiro.'); return; }
   const day = getTodayTasks();
-  day.tasks = JSON.parse(JSON.stringify(defaults));
-  day.completed = [];
+  const existingNames = day.tasks.map(t => t.name.toLowerCase());
+  const toAdd = defaults.filter(t => !existingNames.includes(t.name.toLowerCase()));
+  if (toAdd.length === 0) { alert('Todas as tarefas padrão já estão no seu dia! ✅'); return; }
+  day.tasks = [...day.tasks, ...JSON.parse(JSON.stringify(toAdd))];
   save();
   renderTasks();
-  alert(`${defaults.length} tarefas aplicadas para hoje! 🚀`);
+  alert(`${toAdd.length} tarefa${toAdd.length > 1 ? 's adicionadas' : ' adicionada'} ao seu dia! 🚀`);
+}
+
+// ===== CATEGORIES =====
+const CATS = { saude: '🌿 Saúde', trabalho: '💼 Trabalho', pessoal: '🙂 Pessoal', habito: '⚡ Hábito', financas: '💰 Finanças', estudo: '📚 Estudo', outro: '• Outro' };
+const CAT_COLORS = { saude: '#60c8a0', trabalho: '#60a0f0', pessoal: '#f0a060', habito: '#c8f060', financas: '#f0d060', estudo: '#f060c8', outro: '#b48cf0' };
+
+function catLabel(cat) { return CATS[cat] || cat; }
+
+function selectCat(btn, scope) {
+  const rowId = scope === 'today' ? 'todayCatRow' : 'defaultCatRow';
+  document.querySelectorAll(`#${rowId} .cat-btn`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
 }
 
 // ===== DASHBOARD =====
@@ -929,6 +1424,74 @@ function renderDashboard() {
   }
   document.getElementById('dashStreak').textContent = streak;
 
+  // Weakness: last 30 days task completion rate
+  const taskStats = {}; // taskName -> { done, total }
+  const now2 = new Date();
+  for (let i = 0; i < 30; i++) {
+    const d2 = new Date(now2);
+    d2.setDate(d2.getDate() - i);
+    const key2 = `${d2.getFullYear()}-${d2.getMonth()+1}-${d2.getDate()}`;
+    const dayData2 = state.days && state.days[key2];
+    if (!dayData2 || !dayData2.tasks || dayData2.tasks.length === 0) continue;
+    dayData2.tasks.forEach((t, idx) => {
+      const n = t.name;
+      if (!taskStats[n]) taskStats[n] = { done: 0, total: 0 };
+      taskStats[n].total++;
+      if (dayData2.completed.includes(idx)) taskStats[n].done++;
+    });
+  }
+  const weaknessList = Object.entries(taskStats)
+    .filter(([, v]) => v.total >= 3)
+    .map(([name, v]) => ({ name, pct: Math.round((v.done / v.total) * 100) }))
+    .sort((a, b) => a.pct - b.pct)
+    .slice(0, 5);
+
+  const weakEl = document.getElementById('weaknessList');
+  if (weaknessList.length === 0) {
+    weakEl.innerHTML = `<div style="font-size:0.8rem;color:var(--muted);padding:10px 0;">Dados insuficientes ainda. Use o app por alguns dias! 🌱</div>`;
+  } else {
+    weakEl.innerHTML = weaknessList.map(w => `
+      <div class="weakness-item">
+        <div class="weakness-name">${w.name}</div>
+        <div class="weakness-bar-bg"><div class="weakness-bar-fill" style="width:${w.pct}%"></div></div>
+        <div class="weakness-pct">${w.pct}%</div>
+      </div>
+    `).join('');
+  }
+
+  // Category stats: last 30 days
+  const catData = {}; // cat -> { done, total }
+  for (let i = 0; i < 30; i++) {
+    const d3 = new Date(now2);
+    d3.setDate(d3.getDate() - i);
+    const key3 = `${d3.getFullYear()}-${d3.getMonth()+1}-${d3.getDate()}`;
+    const dayData3 = state.days && state.days[key3];
+    if (!dayData3 || !dayData3.tasks || dayData3.tasks.length === 0) continue;
+    dayData3.tasks.forEach((t, idx) => {
+      const c = t.cat || 'outro';
+      if (!catData[c]) catData[c] = { done: 0, total: 0 };
+      catData[c].total++;
+      if (dayData3.completed.includes(idx)) catData[c].done++;
+    });
+  }
+  const catEl = document.getElementById('catStatsGrid');
+  const catEntries = Object.entries(catData).sort((a, b) => b[1].total - a[1].total);
+  if (catEntries.length === 0) {
+    catEl.innerHTML = `<div style="font-size:0.8rem;color:var(--muted);padding:10px 0;">Adicione categorias às suas tarefas para ver estatísticas aqui 🏷️</div>`;
+  } else {
+    catEl.innerHTML = catEntries.map(([cat, v]) => {
+      const pct = Math.round((v.done / v.total) * 100);
+      const color = CAT_COLORS[cat] || '#b48cf0';
+      return `
+        <div class="cat-stat-row">
+          <div class="cat-stat-label"><span class="cat-tag cat-${cat}">${catLabel(cat)}</span></div>
+          <div class="cat-stat-bar-bg"><div class="cat-stat-bar-fill" style="width:${pct}%;background:${color};opacity:0.8;"></div></div>
+          <div class="cat-stat-pct">${pct}%</div>
+        </div>
+      `;
+    }).join('');
+  }
+
   // Last 14 days dots
   const dots = [];
   for (let i = 13; i >= 0; i--) {
@@ -941,12 +1504,56 @@ function renderDashboard() {
   document.getElementById('streakRow').innerHTML = dots.join('');
 }
 
+// ===== SUGGESTION (yesterday's tasks) =====
+function getYesterday() {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+}
+
+function checkSuggestion() {
+  const day = getTodayTasks();
+  if (day.tasks.length > 0) return; // already has tasks today
+  if (state.suggestionDismissed === getToday()) return; // already dismissed today
+
+  const yesterday = getYesterday();
+  const yData = state.days && state.days[yesterday];
+  if (!yData || !yData.tasks || yData.tasks.length === 0) return;
+
+  // Show banner
+  const banner = document.getElementById('suggestionBanner');
+  const list = document.getElementById('suggestionTasks');
+  list.innerHTML = yData.tasks.slice(0, 5).map(t =>
+    `<div class="suggestion-task">${t.name}${t.cat ? ` <span class="cat-tag cat-${t.cat}" style="margin-top:0;">${catLabel(t.cat)}</span>` : ''}</div>`
+  ).join('') + (yData.tasks.length > 5 ? `<div class="suggestion-task" style="color:var(--muted);font-size:0.75rem;">+ ${yData.tasks.length - 5} mais...</div>` : '');
+  banner.classList.add('show');
+}
+
+function applySuggestion() {
+  const yesterday = getYesterday();
+  const yData = state.days && state.days[yesterday];
+  if (!yData || !yData.tasks) return;
+  const day = getTodayTasks();
+  day.tasks = JSON.parse(JSON.stringify(yData.tasks));
+  day.completed = [];
+  save();
+  dismissSuggestion();
+  renderTasks();
+}
+
+function dismissSuggestion() {
+  state.suggestionDismissed = getToday();
+  save();
+  document.getElementById('suggestionBanner').classList.remove('show');
+}
+
 // ===== INIT =====
 renderDate();
 ensureToday();
 renderPurpose();
 renderTasks();
 checkReward();
+checkSuggestion();
 </script>
 </body>
 </html>
