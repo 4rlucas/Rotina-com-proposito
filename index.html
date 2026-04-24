@@ -886,6 +886,146 @@
   .week-nav-dot.active { background: var(--accent); }
   .week-nav-dot.has-tasks { background: var(--muted); }
   .week-nav-dot.active.has-tasks { background: var(--accent); }
+
+  /* CHECK-IN MATINAL */
+  .checkin-form-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .mood-row {
+    display: flex;
+    gap: 6px;
+    justify-content: space-between;
+    margin: 10px 0 16px;
+  }
+  .mood-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 4px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: var(--surface2);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .mood-btn .mood-emoji { font-size: 1.5rem; line-height: 1; }
+  .mood-btn .mood-label { font-size: 0.55rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; }
+  .mood-btn.selected { border-color: var(--accent); background: rgba(200,240,96,0.1); }
+  .mood-btn.selected .mood-label { color: var(--accent); }
+  .energy-row {
+    display: flex;
+    gap: 5px;
+    margin: 10px 0 16px;
+  }
+  .energy-btn {
+    flex: 1;
+    padding: 8px 2px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: var(--surface2);
+    cursor: pointer;
+    font-size: 0.65rem;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.3;
+    transition: all 0.2s;
+  }
+  .energy-btn.selected { border-color: var(--accent2); background: rgba(240,160,96,0.12); color: var(--accent2); }
+  .checkin-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .checkin-input:focus { border-color: var(--accent); }
+  .checkin-input::placeholder { color: var(--muted); }
+  .checkin-done-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .checkin-done-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .checkin-done-item {
+    flex: 1;
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .checkin-done-value {
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .checkin-done-label {
+    font-size: 0.6rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .checkin-history-grid {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .checkin-history-item {
+    flex-shrink: 0;
+    width: 74px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+  .checkin-history-item.today { border-color: var(--accent); }
+  .checkin-history-date {
+    font-size: 0.58rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 6px;
+  }
+  .checkin-history-emoji { font-size: 1.3rem; line-height: 1; margin-bottom: 4px; }
+  .checkin-energy-mini {
+    display: flex;
+    gap: 2px;
+    justify-content: center;
+    margin-top: 4px;
+  }
+  .checkin-energy-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .checkin-energy-dot.filled { background: var(--accent2); }
 </style>
 </head>
 <body>
@@ -900,6 +1040,7 @@
   <button class="tab" onclick="showTab('semana')">Semana</button>
   <button class="tab" onclick="showTab('dashboard')">Dashboard</button>
   <button class="tab" onclick="showTab('config')">Configurar</button>
+  <button class="tab" onclick="showTab('checkin')">Manhã</button>
 </div>
 
 <!-- VIEW: HOJE -->
@@ -1104,6 +1245,13 @@
   </div>
 </div>
 
+<!-- VIEW: CHECK-IN MATINAL -->
+<div class="view" id="view-checkin">
+  <div id="checkinContent"></div>
+  <div class="section-title" style="margin-bottom:12px;">Últimos 7 dias</div>
+  <div class="checkin-history-grid" id="checkinHistory"></div>
+</div>
+
 <div class="celebration" id="celebration"></div>
 
 <script>
@@ -1141,6 +1289,7 @@ function showTab(tab) {
   if (tab === 'dashboard') renderDashboard();
   if (tab === 'config') renderDefaultTasks();
   if (tab === 'semana') renderWeekView();
+  if (tab === 'checkin') renderCheckin();
 }
 
 // ===== NAV DATE =====
@@ -1741,6 +1890,151 @@ function applyWeekPlanToToday() {
   if (toAdd.length === 0) return;
   day.tasks = [...day.tasks, ...JSON.parse(JSON.stringify(toAdd))];
   save();
+}
+
+// ===== CHECK-IN MATINAL =====
+const MOODS = [
+  { emoji: '😔', label: 'Mal' },
+  { emoji: '😕', label: 'Regular' },
+  { emoji: '😐', label: 'Ok' },
+  { emoji: '😊', label: 'Bem' },
+  { emoji: '🤩', label: 'Ótimo' }
+];
+const ENERGY_LABELS = ['Exausto', 'Cansado', 'Normal', 'Disposto', 'Com tudo'];
+let checkinMood = null;
+let checkinEnergy = null;
+
+function renderCheckin() {
+  const key = getToday();
+  const existing = (state.checkins && state.checkins[key]) || null;
+  const content = document.getElementById('checkinContent');
+  if (existing) {
+    renderCheckinDone(existing, content);
+  } else {
+    renderCheckinForm(content);
+  }
+  renderCheckinHistory();
+}
+
+function renderCheckinForm(container) {
+  checkinMood = null;
+  checkinEnergy = null;
+  container.innerHTML = `
+    <div class="checkin-form-card">
+      <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;margin-bottom:16px;">Como você começa o dia?</div>
+      <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Humor</div>
+      <div class="mood-row" id="checkinMoodRow">
+        ${MOODS.map((m, i) => `
+          <button class="mood-btn" data-mood="${i+1}" onclick="selectCheckinMood(this)">
+            <span class="mood-emoji">${m.emoji}</span>
+            <span class="mood-label">${m.label}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Energia</div>
+      <div class="energy-row" id="checkinEnergyRow">
+        ${ENERGY_LABELS.map((label, i) => `
+          <button class="energy-btn" data-energy="${i+1}" onclick="selectCheckinEnergy(this)">${label}</button>
+        `).join('')}
+      </div>
+      <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Horas de sono</div>
+      <input class="checkin-input" type="number" id="checkinSleep" min="0" max="24" step="0.5" placeholder="Ex: 7.5" />
+      <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Sou grato por…</div>
+      <input class="checkin-input" type="text" id="checkinGratitude" placeholder="Uma coisa pela qual você é grato hoje" />
+      <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Minha intenção para hoje</div>
+      <input class="checkin-input" type="text" id="checkinIntention" placeholder="Uma palavra ou frase que guia seu dia" />
+      <button class="btn btn-primary" onclick="saveCheckin()" style="margin-top:8px;">Fazer check-in ✓</button>
+    </div>
+  `;
+}
+
+function renderCheckinDone(data, container) {
+  const mood = MOODS[(data.mood || 1) - 1];
+  const energyLabel = ENERGY_LABELS[(data.energy || 1) - 1] || '';
+  container.innerHTML = `
+    <div class="checkin-done-card">
+      <div style="font-size:0.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;">✓ Check-in feito hoje</div>
+      <div class="checkin-done-row">
+        <div class="checkin-done-item">
+          <div class="checkin-done-value">${mood.emoji}</div>
+          <div class="checkin-done-label">Humor</div>
+        </div>
+        <div class="checkin-done-item">
+          <div class="checkin-done-value" style="color:var(--accent2);font-size:1rem;font-family:'DM Sans',sans-serif;">${energyLabel}</div>
+          <div class="checkin-done-label">Energia</div>
+        </div>
+        <div class="checkin-done-item">
+          <div class="checkin-done-value" style="color:var(--text);">${data.sleep != null ? data.sleep : '—'}<span style="font-size:0.85rem;font-weight:300;font-family:'DM Sans',sans-serif;">h</span></div>
+          <div class="checkin-done-label">Sono</div>
+        </div>
+      </div>
+      ${data.gratitude ? `<div style="margin-bottom:12px;"><div style="font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">Gratidão</div><div style="font-size:0.9rem;font-family:'Fraunces',serif;font-style:italic;color:var(--text);line-height:1.5;">"${data.gratitude}"</div></div>` : ''}
+      ${data.intention ? `<div><div style="font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">Intenção do dia</div><div style="font-size:0.9rem;color:var(--text);font-weight:500;">${data.intention}</div></div>` : ''}
+    </div>
+  `;
+}
+
+function renderCheckinHistory() {
+  const histEl = document.getElementById('checkinHistory');
+  if (!histEl) return;
+  const now = new Date();
+  const months = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  const items = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    const data = state.checkins && state.checkins[key];
+    const isToday = key === getToday();
+    const label = isToday ? 'Hoje' : `${d.getDate()} ${months[d.getMonth()]}`;
+    if (data) {
+      const mood = MOODS[(data.mood || 1) - 1];
+      const dots = Array.from({length: 5}, (_, j) =>
+        `<div class="checkin-energy-dot ${j < (data.energy || 0) ? 'filled' : ''}"></div>`
+      ).join('');
+      items.push(`
+        <div class="checkin-history-item ${isToday ? 'today' : ''}">
+          <div class="checkin-history-date">${label}</div>
+          <div class="checkin-history-emoji">${mood.emoji}</div>
+          <div class="checkin-energy-mini">${dots}</div>
+          ${data.sleep != null ? `<div style="font-size:0.6rem;color:var(--muted);margin-top:4px;">${data.sleep}h</div>` : ''}
+        </div>
+      `);
+    } else {
+      items.push(`
+        <div class="checkin-history-item ${isToday ? 'today' : ''}">
+          <div class="checkin-history-date">${label}</div>
+          <div class="checkin-history-emoji" style="opacity:0.25;font-size:1rem;">○</div>
+        </div>
+      `);
+    }
+  }
+  histEl.innerHTML = items.join('');
+}
+
+function selectCheckinMood(btn) {
+  document.querySelectorAll('#checkinMoodRow .mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  checkinMood = parseInt(btn.dataset.mood);
+}
+
+function selectCheckinEnergy(btn) {
+  document.querySelectorAll('#checkinEnergyRow .energy-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  checkinEnergy = parseInt(btn.dataset.energy);
+}
+
+function saveCheckin() {
+  if (!checkinMood) { alert('Selecione seu humor!'); return; }
+  if (!checkinEnergy) { alert('Selecione seu nível de energia!'); return; }
+  const sleepVal = document.getElementById('checkinSleep').value;
+  const sleep = sleepVal !== '' ? parseFloat(sleepVal) : null;
+  const gratitude = document.getElementById('checkinGratitude').value.trim() || null;
+  const intention = document.getElementById('checkinIntention').value.trim() || null;
+  if (!state.checkins) state.checkins = {};
+  state.checkins[getToday()] = { mood: checkinMood, energy: checkinEnergy, sleep, gratitude, intention, ts: new Date().toISOString() };
+  save();
+  renderCheckin();
 }
 
 // ===== INIT =====
