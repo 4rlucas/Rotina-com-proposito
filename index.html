@@ -63,7 +63,11 @@
     gap: 2px;
     padding: 16px 20px 0;
     border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
+  .tabs::-webkit-scrollbar { display: none; }
 
   .tab {
     padding: 8px 16px;
@@ -78,6 +82,8 @@
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
     transition: all 0.2s;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   .tab.active {
