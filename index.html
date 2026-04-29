@@ -63,6 +63,7 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     border-bottom: 1px solid var(--border);
+    touch-action: pan-x;
   }
   .tabs-scroll::-webkit-scrollbar { display: none; }
   .tabs {
@@ -2726,6 +2727,21 @@ function skipGateway() {
   save();
   document.getElementById('gatewayOverlay').classList.add('hidden');
 }
+
+// ===== TABS SCROLL ISOLATION =====
+(function () {
+  const el = document.querySelector('.tabs-scroll');
+  let startX = 0, startY = 0;
+  el.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  el.addEventListener('touchmove', e => {
+    const dx = Math.abs(e.touches[0].clientX - startX);
+    const dy = Math.abs(e.touches[0].clientY - startY);
+    if (dx > dy) e.preventDefault();
+  }, { passive: false });
+})();
 
 // ===== INIT =====
 renderDate();
