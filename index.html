@@ -97,8 +97,15 @@
   }
 
   /* VIEWS */
+  @keyframes viewFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
   .view { display: none; padding: 20px; }
-  .view.active { display: block; }
+  .view.active {
+    display: block;
+    animation: viewFadeIn 0.22s ease forwards;
+  }
 
   /* PROPÓSITO BANNER */
   .proposito-banner {
