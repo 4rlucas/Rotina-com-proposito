@@ -1026,6 +1026,251 @@
     background: var(--border);
   }
   .checkin-energy-dot.filled { background: var(--accent2); }
+
+  /* MORNING GATEWAY */
+  .gateway-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    animation: gatewayIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .gateway-overlay.hidden { display: none; }
+  @keyframes gatewayIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .gateway-header {
+    padding: 52px 24px 24px;
+  }
+  .gateway-greeting {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1.7rem;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .gateway-question {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--muted);
+  }
+  .gateway-section {
+    padding: 0 20px;
+    margin-bottom: 24px;
+  }
+  .gateway-section-label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+  }
+  .gateway-chips {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .gateway-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .gateway-chip:active { transform: scale(0.98); }
+  .gateway-chip.selected {
+    border-color: var(--accent);
+    background: rgba(200,240,96,0.07);
+  }
+  .gateway-chip-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    transition: all 0.2s;
+    color: transparent;
+  }
+  .gateway-chip.selected .gateway-chip-check {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0d0d0f;
+  }
+  .gateway-chip-name {
+    flex: 1;
+    font-size: 0.88rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .gateway-extra-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    padding: 14px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .gateway-extra-input:focus { border-color: var(--accent); }
+  .gateway-extra-input::placeholder { color: var(--muted); }
+  .gateway-footer {
+    padding: 8px 20px 48px;
+    margin-top: auto;
+  }
+  .gateway-confirm-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent);
+    color: #0d0d0f;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .gateway-confirm-btn:hover { background: #b8e050; }
+  .gateway-skip {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 6px;
+    transition: color 0.2s;
+  }
+  .gateway-skip:hover { color: var(--text); }
+
+  /* FOCUS / POMODORO */
+  .task-focus {
+    background: none;
+    border: none;
+    color: var(--border);
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 4px;
+    transition: color 0.2s;
+    flex-shrink: 0;
+  }
+  .task-focus:hover { color: var(--accent); }
+
+  .focus-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    animation: gatewayIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .focus-overlay.hidden { display: none; }
+
+  .focus-task-name {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 44px;
+    max-width: 280px;
+    line-height: 1.5;
+  }
+
+  .focus-ring-wrap {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    margin-bottom: 36px;
+  }
+
+  .focus-ring { transform: rotate(-90deg); }
+  .focus-ring-bg { fill: none; stroke: var(--surface2); stroke-width: 10; }
+  .focus-ring-fill {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 603.19;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear;
+  }
+
+  .focus-time {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Fraunces', serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+    letter-spacing: -2px;
+    white-space: nowrap;
+  }
+
+  .focus-label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .focus-controls { display: flex; gap: 12px; }
+
+  .focus-presets {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .focus-preset-btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .focus-preset-btn.selected {
+    border-color: var(--accent);
+    background: rgba(200,240,96,0.1);
+    color: var(--accent);
+  }
+  .focus-setup { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 320px; }
+  .focus-running { display: none; flex-direction: column; align-items: center; }
 </style>
 </head>
 <body>
@@ -1199,6 +1444,12 @@
 
 <!-- VIEW: CONFIG -->
 <div class="view" id="view-config">
+  <div class="section-title" style="margin-bottom:12px;">Seu nome</div>
+  <div class="proposito-edit" style="margin-bottom:28px;">
+    <input type="text" id="userNameInput" class="checkin-input" style="margin-bottom:8px;" placeholder="Como quer ser chamado? Ex: Lucas" />
+    <button class="btn btn-primary" onclick="saveUserName()">Salvar nome</button>
+  </div>
+
   <div class="section-title" style="margin-bottom:12px;">Seu propósito</div>
   <div class="proposito-edit">
     <textarea id="propositoInput" placeholder="Escreva por que você quer manter uma rotina. Ex: Quero ser disciplinado para construir a vida que imagino para mim."></textarea>
@@ -1243,6 +1494,43 @@
       </div>
     </div>
   </div>
+
+  <div class="section-title" style="margin-bottom:8px; margin-top:28px;">
+    Tarefas padrão
+    <button class="btn btn-ghost" style="padding:4px 10px; font-size:0.72rem;" onclick="toggleAddDefault()">+ adicionar</button>
+  </div>
+  <div style="font-size:0.75rem;color:var(--muted);margin-bottom:14px;line-height:1.5;">Adicionadas automaticamente todo dia ao abrir o app.</div>
+
+  <div class="tasks-list" id="defaultTasksList" style="margin-bottom:8px;"></div>
+
+  <div class="add-task-area toggle-add" id="addDefaultArea" style="margin-bottom:16px;">
+    <input type="text" id="defaultTaskName" placeholder="Ex: Meditar por 10 min" />
+    <input type="text" id="defaultTaskTime" placeholder="Horário (opcional, ex: 07:00)" />
+    <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Categoria</div>
+    <div class="cat-select-row" id="defaultCatRow">
+      <button class="cat-btn" data-cat="saude" onclick="selectCat(this,'default')">🌿 Saúde</button>
+      <button class="cat-btn" data-cat="trabalho" onclick="selectCat(this,'default')">💼 Trabalho</button>
+      <button class="cat-btn" data-cat="pessoal" onclick="selectCat(this,'default')">🙂 Pessoal</button>
+      <button class="cat-btn" data-cat="habito" onclick="selectCat(this,'default')">⚡ Hábito</button>
+      <button class="cat-btn" data-cat="financas" onclick="selectCat(this,'default')">💰 Finanças</button>
+      <button class="cat-btn" data-cat="estudo" onclick="selectCat(this,'default')">📚 Estudo</button>
+      <button class="cat-btn" data-cat="outro" onclick="selectCat(this,'default')">• Outro</button>
+    </div>
+    <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Prioridade</div>
+    <div class="prio-select-row" id="defaultPrioRow">
+      <button class="prio-btn" data-prio="A" onclick="selectPrio(this,'default')"><span class="prio-letter">A</span><span class="prio-desc">Alto impacto</span></button>
+      <button class="prio-btn" data-prio="B" onclick="selectPrio(this,'default')"><span class="prio-letter">B</span><span class="prio-desc">Urgente</span></button>
+      <button class="prio-btn" data-prio="C" onclick="selectPrio(this,'default')"><span class="prio-letter">C</span><span class="prio-desc">Baixo impacto</span></button>
+      <button class="prio-btn" data-prio="D" onclick="selectPrio(this,'default')"><span class="prio-letter">D</span><span class="prio-desc">Delegável</span></button>
+      <button class="prio-btn" data-prio="E" onclick="selectPrio(this,'default')"><span class="prio-letter">E</span><span class="prio-desc">Eliminável</span></button>
+    </div>
+    <button class="btn btn-primary" onclick="addDefaultTask()">Adicionar tarefa padrão</button>
+  </div>
+
+  <button class="btn btn-ghost" style="width:100%;justify-content:center;margin-bottom:28px;" onclick="applyDefaultToToday()">↻ Aplicar padrões ao dia de hoje</button>
+
+  <div class="section-title" style="margin-bottom:12px; margin-top:4px;">Notificações</div>
+  <div id="notifSettingsArea"></div>
 </div>
 
 <!-- VIEW: CHECK-IN MATINAL -->
@@ -1250,6 +1538,69 @@
   <div id="checkinContent"></div>
   <div class="section-title" style="margin-bottom:12px;">Últimos 7 dias</div>
   <div class="checkin-history-grid" id="checkinHistory"></div>
+</div>
+
+<!-- MORNING GATEWAY -->
+<div class="gateway-overlay hidden" id="gatewayOverlay">
+  <div class="gateway-header">
+    <div class="gateway-greeting" id="gatewayGreeting"></div>
+    <div class="gateway-question">Qual é o seu foco hoje?</div>
+  </div>
+  <div id="gatewayBody"></div>
+  <div class="gateway-footer">
+    <button class="gateway-confirm-btn" onclick="confirmGateway()">Começar o dia →</button>
+    <span class="gateway-skip" onclick="skipGateway()">pular por hoje</span>
+  </div>
+</div>
+
+<!-- FOCUS OVERLAY -->
+<div class="focus-overlay hidden" id="focusOverlay">
+
+  <!-- Setup: escolha de duração -->
+  <div class="focus-setup" id="focusSetup">
+    <div class="focus-task-name" id="focusTaskName"></div>
+    <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:18px;text-align:center;">Quanto tempo de foco?</div>
+    <div class="focus-presets" id="focusPresets">
+      <button class="focus-preset-btn" data-min="15" onclick="selectFocusPreset(this)">15 min</button>
+      <button class="focus-preset-btn selected" data-min="25" onclick="selectFocusPreset(this)">25 min</button>
+      <button class="focus-preset-btn" data-min="45" onclick="selectFocusPreset(this)">45 min</button>
+      <button class="focus-preset-btn" data-min="60" onclick="selectFocusPreset(this)">60 min</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin:20px 0;width:100%;">
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+      <span style="font-size:0.7rem;color:var(--muted);">ou</span>
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:36px;width:100%;">
+      <input type="number" id="focusCustomMin" min="1" max="180" placeholder="Ex: 30"
+        style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:1rem;padding:12px;outline:none;text-align:center;transition:border-color 0.2s;"
+        onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+        oninput="clearFocusPresets()" />
+      <span style="font-size:0.85rem;color:var(--muted);white-space:nowrap;">minutos</span>
+    </div>
+    <div class="focus-controls">
+      <button class="btn btn-primary" onclick="beginFocus()" style="min-width:140px;">Começar →</button>
+      <button class="btn btn-ghost" onclick="stopFocus()">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- Running: timer em andamento -->
+  <div class="focus-running" id="focusRunning">
+    <div class="focus-task-name" id="focusRunningName"></div>
+    <div class="focus-ring-wrap">
+      <svg class="focus-ring" width="220" height="220" viewBox="0 0 220 220">
+        <circle class="focus-ring-bg" cx="110" cy="110" r="96"/>
+        <circle class="focus-ring-fill" id="focusRingFill" cx="110" cy="110" r="96"/>
+      </svg>
+      <div class="focus-time" id="focusTime">25:00</div>
+    </div>
+    <div class="focus-label" id="focusLabel">Foco</div>
+    <div class="focus-controls" id="focusControls">
+      <button class="btn btn-primary" id="focusPauseBtn" onclick="toggleFocusPause()" style="min-width:120px;">Pausar</button>
+      <button class="btn btn-ghost" onclick="stopFocus()">Parar</button>
+    </div>
+  </div>
+
 </div>
 
 <div class="celebration" id="celebration"></div>
@@ -1287,7 +1638,7 @@ function showTab(tab) {
   document.getElementById('view-' + tab).classList.add('active');
   event.target.classList.add('active');
   if (tab === 'dashboard') renderDashboard();
-  if (tab === 'config') renderDefaultTasks();
+  if (tab === 'config') { renderDefaultTasks(); renderNotifSettings(); }
   if (tab === 'semana') renderWeekView();
   if (tab === 'checkin') renderCheckin();
 }
@@ -1328,6 +1679,7 @@ function renderTasks() {
           ${t.time ? `<div class="task-time">⏰ ${t.time}</div>` : ''}
           <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:3px;">${prioHtml}${catHtml}</div>
         </div>
+        ${!done ? `<button class="task-focus" onclick="startFocus(event,${i})" title="Modo foco">▶</button>` : ''}
         <button class="task-edit" onclick="startEditTask(event,${i})" title="Editar">✎</button>
         <button class="task-delete" onclick="deleteTask(event,${i})">✕</button>
       </div>
@@ -1495,6 +1847,13 @@ function celebrate() {
     c.appendChild(p);
   }
   setTimeout(() => c.innerHTML = '', 3000);
+}
+
+// ===== USER NAME =====
+function saveUserName() {
+  state.userName = document.getElementById('userNameInput').value.trim();
+  save();
+  alert('Nome salvo! 👋');
 }
 
 // ===== PURPOSE =====
@@ -2037,6 +2396,324 @@ function saveCheckin() {
   renderCheckin();
 }
 
+// ===== FOCUS / POMODORO =====
+const FOCUS_CIRCUMFERENCE = 2 * Math.PI * 96;
+let focusInterval = null;
+let focusSecondsLeft = 0;
+let focusTotalSeconds = 0;
+let focusPaused = false;
+let focusTaskIndex = null;
+
+function startFocus(e, i) {
+  e.stopPropagation();
+  const { tasks } = getTodayTasks();
+  focusTaskIndex = i;
+
+  document.getElementById('focusTaskName').textContent = tasks[i].name;
+  document.getElementById('focusCustomMin').value = '';
+  document.querySelectorAll('.focus-preset-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelector('.focus-preset-btn[data-min="25"]').classList.add('selected');
+
+  document.getElementById('focusSetup').style.display = 'flex';
+  document.getElementById('focusRunning').style.display = 'none';
+  document.getElementById('focusOverlay').classList.remove('hidden');
+}
+
+function selectFocusPreset(btn) {
+  document.querySelectorAll('.focus-preset-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('focusCustomMin').value = '';
+}
+
+function clearFocusPresets() {
+  document.querySelectorAll('.focus-preset-btn').forEach(b => b.classList.remove('selected'));
+}
+
+function beginFocus() {
+  const customVal = document.getElementById('focusCustomMin').value;
+  const selectedPreset = document.querySelector('.focus-preset-btn.selected');
+  const minutes = customVal ? parseInt(customVal) : (selectedPreset ? parseInt(selectedPreset.dataset.min) : 25);
+  if (!minutes || minutes < 1) return;
+
+  focusTotalSeconds = minutes * 60;
+  focusSecondsLeft = focusTotalSeconds;
+  focusPaused = false;
+
+  const taskName = document.getElementById('focusTaskName').textContent;
+  document.getElementById('focusRunningName').textContent = taskName;
+  document.getElementById('focusLabel').textContent = 'Foco';
+  document.getElementById('focusControls').innerHTML = `
+    <button class="btn btn-primary" id="focusPauseBtn" onclick="toggleFocusPause()" style="min-width:120px;">Pausar</button>
+    <button class="btn btn-ghost" onclick="stopFocus()">Parar</button>
+  `;
+
+  const ring = document.getElementById('focusRingFill');
+  ring.style.transition = 'none';
+  ring.style.strokeDashoffset = 0;
+  requestAnimationFrame(() => { ring.style.transition = 'stroke-dashoffset 1s linear'; });
+
+  document.getElementById('focusSetup').style.display = 'none';
+  document.getElementById('focusRunning').style.display = 'flex';
+
+  updateFocusDisplay();
+  if (focusInterval) clearInterval(focusInterval);
+  focusInterval = setInterval(tickFocus, 1000);
+}
+
+function tickFocus() {
+  if (focusPaused) return;
+  focusSecondsLeft--;
+  updateFocusDisplay();
+  if (focusSecondsLeft <= 0) {
+    clearInterval(focusInterval);
+    focusInterval = null;
+    focusComplete();
+  }
+}
+
+function updateFocusDisplay() {
+  const m = Math.floor(focusSecondsLeft / 60);
+  const s = focusSecondsLeft % 60;
+  document.getElementById('focusTime').textContent =
+    `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  const progress = focusTotalSeconds > 0 ? focusSecondsLeft / focusTotalSeconds : 0;
+  document.getElementById('focusRingFill').style.strokeDashoffset =
+    FOCUS_CIRCUMFERENCE * (1 - progress);
+}
+
+function toggleFocusPause() {
+  focusPaused = !focusPaused;
+  document.getElementById('focusPauseBtn').textContent = focusPaused ? 'Retomar' : 'Pausar';
+  document.getElementById('focusLabel').textContent = focusPaused ? 'Pausado' : 'Foco';
+}
+
+function stopFocus() {
+  if (focusInterval) { clearInterval(focusInterval); focusInterval = null; }
+  document.getElementById('focusOverlay').classList.add('hidden');
+  focusTaskIndex = null;
+}
+
+function focusComplete() {
+  document.getElementById('focusTime').textContent = '00:00';
+  document.getElementById('focusLabel').textContent = 'Sessão concluída! 🎉';
+  document.getElementById('focusControls').innerHTML = `
+    <button class="btn btn-primary" onclick="focusMarkDone()" style="min-width:160px;">✓ Marcar como feita</button>
+    <button class="btn btn-ghost" onclick="stopFocus()">Fechar</button>
+  `;
+  celebrate();
+  if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
+}
+
+function focusMarkDone() {
+  if (focusTaskIndex !== null) {
+    const day = getTodayTasks();
+    if (!day.completed.includes(focusTaskIndex)) {
+      day.completed.push(focusTaskIndex);
+      save();
+    }
+  }
+  stopFocus();
+  renderTasks();
+  checkReward();
+}
+
+// ===== NOTIFICATIONS =====
+function renderNotifSettings() {
+  const area = document.getElementById('notifSettingsArea');
+  if (!area) return;
+  const supported = 'Notification' in window;
+  const perm = supported ? Notification.permission : 'unsupported';
+
+  let statusHtml = '';
+  if (!supported) {
+    statusHtml = `<div style="font-size:0.82rem;color:var(--muted);padding:8px 0 4px;">Seu navegador não suporta notificações.</div>`;
+  } else if (perm === 'granted') {
+    statusHtml = `<div style="font-size:0.75rem;color:var(--accent);margin-bottom:14px;letter-spacing:0.5px;">✓ Notificações ativadas</div>`;
+  } else if (perm === 'denied') {
+    statusHtml = `<div style="font-size:0.75rem;color:var(--danger);margin-bottom:14px;line-height:1.5;">Bloqueadas pelo navegador.<br>Habilite nas configurações do navegador e recarregue.</div>`;
+  }
+
+  area.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:28px;">
+      ${statusHtml}
+      ${supported && perm === 'default' ? `
+        <button class="btn btn-primary" onclick="enableNotifications()" style="margin-bottom:4px;">Ativar notificações</button>
+      ` : ''}
+      ${perm === 'granted' ? `
+        <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Lembrete matinal</div>
+        <div style="display:flex;gap:8px;margin-bottom:14px;">
+          <input type="time" id="morningReminderInput" value="${state.morningReminder || ''}"
+            style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.85rem;padding:10px 12px;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'" />
+          <button class="btn btn-primary" style="flex:0 0 auto;" onclick="saveMorningReminder()">Salvar</button>
+        </div>
+        <div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Tarefas com horário definido também geram lembretes automáticos no horário marcado.</div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function enableNotifications() {
+  if (!('Notification' in window)) return;
+  Notification.requestPermission().then(() => {
+    renderNotifSettings();
+    if (Notification.permission === 'granted') scheduleNotifications();
+  });
+}
+
+function saveMorningReminder() {
+  const val = document.getElementById('morningReminderInput').value;
+  state.morningReminder = val || null;
+  save();
+  scheduleNotifications();
+  renderNotifSettings();
+}
+
+function scheduleNotifications() {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  const now = new Date();
+
+  if (state.morningReminder) {
+    const [h, m] = state.morningReminder.split(':').map(Number);
+    const target = new Date();
+    target.setHours(h, m, 0, 0);
+    const delay = target - now;
+    if (delay > 0) {
+      setTimeout(() => {
+        new Notification('Rotina com Propósito 🌅', {
+          body: state.userName ? `Bom dia, ${state.userName}! Hora de planejar seu dia.` : 'Bom dia! Hora de planejar seu dia.',
+          tag: 'morning-reminder'
+        });
+      }, delay);
+    }
+  }
+
+  const todayKey = getToday();
+  const day = state.days && state.days[todayKey];
+  if (!day || !day.tasks) return;
+  day.tasks.forEach((t, i) => {
+    if (!t.time) return;
+    if (day.completed && day.completed.includes(i)) return;
+    const parts = t.time.split(':');
+    if (parts.length < 2) return;
+    const target = new Date();
+    target.setHours(parseInt(parts[0]), parseInt(parts[1]), 0, 0);
+    const delay = target - now;
+    if (delay > 0) {
+      setTimeout(() => {
+        const current = state.days && state.days[todayKey];
+        if (current && current.completed && current.completed.includes(i)) return;
+        new Notification(`⏰ ${t.name}`, {
+          body: t.cat ? catLabel(t.cat) : 'Tarefa agendada',
+          tag: `task-${todayKey}-${i}`
+        });
+      }, delay);
+    }
+  });
+}
+
+// ===== MORNING GATEWAY =====
+let gatewaySelected = new Set();
+let gatewaySuggestions = [];
+
+function shouldShowGateway() {
+  if (state.gatewayDismissed === getToday()) return false;
+  const day = getTodayTasks();
+  return day.tasks.length === 0;
+}
+
+function renderGateway() {
+  const d = new Date();
+  const days = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  const months = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  const name = state.userName ? `, ${state.userName}` : '';
+  document.getElementById('gatewayGreeting').textContent = `Bom dia${name}. ${days[d.getDay()]}, ${d.getDate()} de ${months[d.getMonth()]}.`;
+
+  const yesterday = getYesterday();
+  const yData = state.days && state.days[yesterday];
+  const yesterdayTasks = (yData && yData.tasks) ? yData.tasks : [];
+  const defaultTasks = state.defaultTasks || [];
+
+  const seen = new Set();
+  gatewaySuggestions = [];
+  yesterdayTasks.forEach(t => {
+    if (!seen.has(t.name.toLowerCase())) {
+      seen.add(t.name.toLowerCase());
+      gatewaySuggestions.push({ ...t });
+    }
+  });
+  defaultTasks.forEach(t => {
+    if (!seen.has(t.name.toLowerCase())) {
+      seen.add(t.name.toLowerCase());
+      gatewaySuggestions.push({ ...t });
+    }
+  });
+
+  gatewaySelected = new Set(gatewaySuggestions.map((_, i) => i));
+
+  let html = '';
+
+  if (gatewaySuggestions.length > 0) {
+    html += `
+      <div class="gateway-section">
+        <div class="gateway-section-label">Sugestões para hoje</div>
+        <div class="gateway-chips" id="gatewayChips">
+          ${gatewaySuggestions.map((t, i) => `
+            <div class="gateway-chip selected" data-index="${i}" onclick="toggleGatewayChip(this)">
+              <div class="gateway-chip-check">✓</div>
+              <div class="gateway-chip-name">${t.name}</div>
+              <div style="display:flex;gap:4px;flex-shrink:0;">
+                ${t.prio ? `<span class="prio-tag prio-${t.prio}">${t.prio}</span>` : ''}
+                ${t.cat ? `<span class="cat-tag cat-${t.cat}">${catLabel(t.cat)}</span>` : ''}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+  }
+
+  html += `
+    <div class="gateway-section">
+      <div class="gateway-section-label">${gatewaySuggestions.length > 0 ? 'Algo mais?' : 'O que você precisa fazer hoje?'}</div>
+      <input class="gateway-extra-input" type="text" id="gatewayExtraInput" placeholder="+ o que mais você precisa fazer hoje?" />
+    </div>`;
+
+  document.getElementById('gatewayBody').innerHTML = html;
+}
+
+function toggleGatewayChip(el) {
+  const i = parseInt(el.dataset.index);
+  if (gatewaySelected.has(i)) {
+    gatewaySelected.delete(i);
+    el.classList.remove('selected');
+  } else {
+    gatewaySelected.add(i);
+    el.classList.add('selected');
+  }
+}
+
+function confirmGateway() {
+  const day = getTodayTasks();
+  gatewaySuggestions.forEach((t, i) => {
+    if (gatewaySelected.has(i)) day.tasks.push({ ...t });
+  });
+  const extra = document.getElementById('gatewayExtraInput');
+  if (extra && extra.value.trim()) {
+    day.tasks.push({ name: extra.value.trim(), cat: null, prio: null, time: '' });
+  }
+  save();
+  document.getElementById('gatewayOverlay').classList.add('hidden');
+  renderTasks();
+  checkReward();
+}
+
+function skipGateway() {
+  state.gatewayDismissed = getToday();
+  state.suggestionDismissed = getToday();
+  save();
+  document.getElementById('gatewayOverlay').classList.add('hidden');
+}
+
 // ===== INIT =====
 renderDate();
 ensureToday();
@@ -2044,7 +2721,13 @@ applyWeekPlanToToday();
 renderPurpose();
 renderTasks();
 checkReward();
-checkSuggestion();
+scheduleNotifications();
+if (shouldShowGateway()) {
+  renderGateway();
+  document.getElementById('gatewayOverlay').classList.remove('hidden');
+} else {
+  checkSuggestion();
+}
 </script>
 </body>
 </html>
