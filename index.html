@@ -233,7 +233,7 @@
     align-items: center;
     gap: 14px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background 0.35s ease, border-color 0.35s ease;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
   }
@@ -254,7 +254,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.25s;
+    transition: background 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                border-color 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     font-size: 0.75rem;
   }
 
@@ -277,7 +278,36 @@
 
   .task-item.done .task-name {
     color: var(--muted);
-    text-decoration: line-through;
+  }
+
+  /* risco animado */
+  .task-name-wrap {
+    position: relative;
+    display: inline;
+  }
+  .task-name-wrap::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 1.5px;
+    background: var(--muted);
+    transition: width 0.3s ease 0.12s;
+    border-radius: 1px;
+  }
+  .task-item.done .task-name-wrap::after { width: 100%; }
+
+  /* check bounce */
+  @keyframes checkPop {
+    0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
+    65%  { transform: scale(1.35) rotate(8deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg);  opacity: 1; }
+  }
+  .check-mark {
+    display: inline-block;
+    animation: checkPop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
   .task-time {
@@ -1689,7 +1719,7 @@ function renderTasks() {
       <div class="task-item ${done ? 'done' : ''}" id="task-item-${i}">
         <div class="task-check" onclick="toggleTask(${i})">${done ? '✓' : ''}</div>
         <div class="task-content" onclick="toggleTask(${i})">
-          <div class="task-name">${t.name}</div>
+          <div class="task-name"><span class="task-name-wrap">${t.name}</span></div>
           ${t.time ? `<div class="task-time">⏰ ${t.time}</div>` : ''}
           <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:3px;">${prioHtml}${catHtml}</div>
         </div>
@@ -1706,13 +1736,32 @@ function renderTasks() {
 function toggleTask(i) {
   const day = getTodayTasks();
   const idx = day.completed.indexOf(i);
-  if (idx === -1) {
+  const marking = idx === -1;
+
+  if (marking) {
     day.completed.push(i);
+    if ('vibrate' in navigator) navigator.vibrate(40);
   } else {
     day.completed.splice(idx, 1);
   }
   save();
-  renderTasks();
+
+  const item = document.getElementById(`task-item-${i}`);
+  if (item) {
+    const check = item.querySelector('.task-check');
+    const focusBtn = item.querySelector('.task-focus');
+    if (marking) {
+      item.classList.add('done');
+      check.innerHTML = '<span class="check-mark">✓</span>';
+      if (focusBtn) focusBtn.style.display = 'none';
+    } else {
+      item.classList.remove('done');
+      check.innerHTML = '';
+      if (focusBtn) focusBtn.style.display = '';
+    }
+  }
+
+  updateProgress(day.completed.length, day.tasks.length);
   checkReward();
 }
 
@@ -1831,6 +1880,7 @@ function checkReward() {
   if (tasks.length > 0 && completed.length === tasks.length) {
     badge.classList.add('show');
     celebrate();
+    if ('vibrate' in navigator) navigator.vibrate([80, 50, 80, 50, 120]);
     // record full day
     const today = getToday();
     if (!state.fullDays) state.fullDays = [];
