@@ -58,16 +58,20 @@
   }
 
   /* TABS */
-  .tabs {
-    display: flex;
-    gap: 2px;
-    padding: 16px 20px 0;
-    border-bottom: 1px solid var(--border);
+  .tabs-scroll {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    border-bottom: 1px solid var(--border);
   }
-  .tabs::-webkit-scrollbar { display: none; }
+  .tabs-scroll::-webkit-scrollbar { display: none; }
+  .tabs {
+    display: inline-flex;
+    min-width: 100%;
+    justify-content: center;
+    gap: 2px;
+    padding: 16px 20px 0;
+  }
 
   .tab {
     padding: 8px 16px;
@@ -1286,12 +1290,14 @@
   <div class="nav-date" id="navDate"></div>
 </nav>
 
-<div class="tabs">
-  <button class="tab active" onclick="showTab('hoje')">Hoje</button>
-  <button class="tab" onclick="showTab('semana')">Semana</button>
-  <button class="tab" onclick="showTab('dashboard')">Dashboard</button>
-  <button class="tab" onclick="showTab('config')">Configurar</button>
-  <button class="tab" onclick="showTab('checkin')">Manhã</button>
+<div class="tabs-scroll">
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('hoje')">Hoje</button>
+    <button class="tab" onclick="showTab('semana')">Semana</button>
+    <button class="tab" onclick="showTab('dashboard')">Dashboard</button>
+    <button class="tab" onclick="showTab('config')">Configurar</button>
+    <button class="tab" onclick="showTab('checkin')">Manhã</button>
+  </div>
 </div>
 
 <!-- VIEW: HOJE -->
@@ -1643,6 +1649,7 @@ function showTab(tab) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById('view-' + tab).classList.add('active');
   event.target.classList.add('active');
+  event.target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
   if (tab === 'dashboard') renderDashboard();
   if (tab === 'config') { renderDefaultTasks(); renderNotifSettings(); }
   if (tab === 'semana') renderWeekView();
