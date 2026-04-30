@@ -1344,36 +1344,42 @@
   .dash-ov-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
 
   /* calendar */
-  .dash-cal-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-bottom: 10px; }
-  .dash-cal-day { aspect-ratio: 1; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.52rem; font-family: 'DM Sans', sans-serif; }
+  .dash-cal-headers { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 5px; }
+  .dash-cal-header-cell { font-size: 0.52rem; color: var(--muted); text-align: center; text-transform: uppercase; letter-spacing: 0.5px; }
+  .dash-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 10px; }
+  .dash-cal-day { aspect-ratio: 1; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.52rem; font-family: 'DM Sans', sans-serif; }
   .dash-cal-legend { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
   .dash-cal-legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.62rem; color: var(--muted); }
   .dash-cal-legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
 
   /* weekday bars */
+  @keyframes barScaleIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   .dash-wd-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
   .dash-wd-label { width: 28px; font-size: 0.72rem; color: var(--muted); flex-shrink: 0; }
-  .dash-wd-bar-wrap { flex: 1; height: 22px; background: var(--surface2); border-radius: 6px; overflow: hidden; }
-  .dash-wd-bar { height: 100%; border-radius: 6px; transition: width 0.6s ease; }
+  .dash-wd-bar-wrap { flex: 1; height: 28px; background: var(--surface2); border-radius: 7px; overflow: hidden; }
+  .dash-wd-bar { height: 100%; border-radius: 7px; transform-origin: left center; animation: barScaleIn 0.55s cubic-bezier(0.34,1.56,0.64,1) both; }
   .dash-wd-pct { width: 36px; text-align: right; font-size: 0.72rem; color: var(--muted); flex-shrink: 0; }
 
   /* time blocks */
   .dash-time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .dash-time-block { background: var(--surface2); border-radius: 10px; padding: 14px 10px; text-align: center; border: 1px solid transparent; }
-  .dash-time-block.best { border-color: var(--accent); }
-  .dash-time-pct { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--accent); line-height: 1; }
-  .dash-time-pct.muted { color: var(--muted); font-size: 1.2rem; }
-  .dash-time-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
-  .dash-time-range { font-size: 0.6rem; color: var(--muted); margin-top: 2px; opacity: 0.7; }
+  .dash-time-block { background: var(--surface2); border-radius: 12px; padding: 16px 12px; text-align: center; border: 1px solid transparent; }
+  .dash-time-block.worst { border-color: var(--danger); background: rgba(255,107,107,0.06); }
+  .dash-time-icon { font-size: 1.25rem; margin-bottom: 6px; }
+  .dash-time-pct { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 700; color: var(--accent); line-height: 1; }
+  .dash-time-pct.muted { color: var(--muted); font-size: 1.3rem; }
+  .dash-time-pct.fail { color: var(--danger); }
+  .dash-time-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+  .dash-time-range { font-size: 0.58rem; color: var(--muted); margin-top: 2px; opacity: 0.6; }
+  .dash-time-mini-bar { height: 3px; border-radius: 2px; background: var(--border); margin-top: 10px; overflow: hidden; }
+  .dash-time-mini-fill { height: 100%; border-radius: 2px; transform-origin: left center; animation: barScaleIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
 
   /* failed tasks */
-  .dash-fail-item { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .dash-fail-info { flex: 1; min-width: 0; }
-  .dash-fail-name { font-size: 0.85rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
-  .dash-fail-bar-wrap { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-  .dash-fail-bar-bg { width: 72px; height: 5px; background: var(--surface2); border-radius: 3px; }
-  .dash-fail-bar { height: 100%; border-radius: 3px; background: var(--danger); }
-  .dash-fail-pct { font-size: 0.75rem; color: var(--danger); width: 34px; text-align: right; flex-shrink: 0; }
+  .dash-fail-item { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .dash-fail-header { display: flex; align-items: center; gap: 8px; }
+  .dash-fail-name { font-size: 0.85rem; color: var(--text); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dash-fail-bar-bg { width: 100%; height: 5px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+  .dash-fail-bar { height: 100%; border-radius: 3px; background: var(--danger); transform-origin: left center; animation: barScaleIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
+  .dash-fail-pct { font-size: 0.75rem; color: var(--danger); font-weight: 500; flex-shrink: 0; }
 
   /* insights */
   .dash-insight-card { background: var(--surface2); border-radius: 10px; padding: 14px; margin-bottom: 10px; font-size: 0.85rem; color: var(--text); line-height: 1.7; }
@@ -1381,8 +1387,6 @@
 
   /* quando falha */
   .dash-fail-sub-label { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
-  .dash-time-block.worst { border-color: var(--danger); }
-  .dash-time-pct.fail { color: var(--danger); }
 </style>
 </head>
 <body>
@@ -2245,22 +2249,42 @@ function renderDashboard() {
     </div>
   </div>`;
 
-  // 2. Calendário 30 dias
+  // 2. Calendário 5 semanas (grade 7×5 com headers)
+  const daysToSat = (6 - now.getDay() + 7) % 7;
+  const gridEnd = new Date(now); gridEnd.setDate(now.getDate() + daysToSat);
+  const gridStart = new Date(gridEnd); gridStart.setDate(gridEnd.getDate() - 34);
+  const calCells = [];
+  for (let i = 0; i < 35; i++) {
+    const d = new Date(gridStart); d.setDate(gridStart.getDate() + i);
+    const k = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    const dd = state.days && state.days[k];
+    let pct = null;
+    if (dd && dd.tasks && dd.tasks.length > 0)
+      pct = Math.round(((dd.completed || []).length / dd.tasks.length) * 100);
+    calCells.push({ d, k, pct, isFuture: d > now });
+  }
+  const DOW_ABBR = ['D','S','T','Q','Q','S','S'];
   html += `<div class="dash-section">
-    <div class="dash-section-title">Histórico — últimos 30 dias</div>
+    <div class="dash-section-title">Histórico — 5 semanas</div>
+    <div class="dash-cal-headers">
+      ${DOW_ABBR.map(l => `<div class="dash-cal-header-cell">${l}</div>`).join('')}
+    </div>
     <div class="dash-cal-grid">
-      ${days30.map(({ d, pct, key }) => {
+      ${calCells.map(({ d, pct, isFuture, k }) => {
+        if (isFuture) return `<div class="dash-cal-day" style="background:var(--surface2);opacity:0.3;"></div>`;
         const color = calColor(pct);
-        const textColor = pct !== null && pct > 0 ? 'rgba(0,0,0,0.4)' : 'var(--muted)';
-        const outline = key === todayKey ? 'outline:2px solid var(--accent);outline-offset:1px;' : '';
-        const title = `${d.getDate()} ${months[d.getMonth()]} — ${pct !== null ? pct + '%' : 'sem dados'}`;
-        return `<div class="dash-cal-day" style="background:${color};${outline}" title="${title}">
-          <span style="color:${textColor};">${d.getDate()}</span>
-        </div>`;
+        const outline = k === todayKey ? 'outline:2px solid var(--accent);outline-offset:2px;' : '';
+        const isMonth1 = d.getDate() === 1;
+        const label = isMonth1
+          ? `<span style="font-size:0.42rem;color:rgba(255,255,255,0.4);line-height:1;">${months[d.getMonth()]}</span>`
+          : `<span style="color:${pct !== null && pct > 0 ? 'rgba(0,0,0,0.45)' : 'rgba(255,255,255,0.3)'};">${d.getDate()}</span>`;
+        const title = `${d.getDate()} ${months[d.getMonth()]} — ${pct !== null ? pct+'%' : 'sem dados'}`;
+        return `<div class="dash-cal-day" style="background:${color};${outline}" title="${title}">${label}</div>`;
       }).join('')}
     </div>
     <div class="dash-cal-legend">
-      <div class="dash-cal-legend-item"><div class="dash-cal-legend-dot" style="background:rgba(255,107,107,0.45);"></div><span>Abaixo de 50%</span></div>
+      <div class="dash-cal-legend-item"><div class="dash-cal-legend-dot" style="background:var(--surface2);border:1px solid var(--border);"></div><span>Sem dados</span></div>
+      <div class="dash-cal-legend-item"><div class="dash-cal-legend-dot" style="background:rgba(255,107,107,0.45);"></div><span>&lt;50%</span></div>
       <div class="dash-cal-legend-item"><div class="dash-cal-legend-dot" style="background:rgba(240,208,96,0.5);"></div><span>50–74%</span></div>
       <div class="dash-cal-legend-item"><div class="dash-cal-legend-dot" style="background:rgba(150,220,80,0.55);"></div><span>75–99%</span></div>
       <div class="dash-cal-legend-item"><div class="dash-cal-legend-dot" style="background:var(--accent);"></div><span>100%</span></div>
@@ -2279,7 +2303,7 @@ function renderDashboard() {
       return `<div class="dash-wd-row">
         <div class="dash-wd-label" style="${isWorst ? 'color:var(--danger);font-weight:500;' : ''}">${label}</div>
         <div class="dash-wd-bar-wrap">
-          <div class="dash-wd-bar" style="width:${v !== null ? v : 0}%;background:${barColor};"></div>
+          <div class="dash-wd-bar" style="width:${v !== null ? v : 0}%;background:${barColor};animation-delay:${i * 0.06}s;"></div>
         </div>
         <div class="dash-wd-pct" style="${isWorst ? 'color:var(--danger);' : ''}">${v !== null ? v + '%' : '—'}</div>
       </div>`;
@@ -2291,10 +2315,14 @@ function renderDashboard() {
           ${tBlocks.map((b, i) => {
             const fpct = tBlockFailPcts[i];
             const isWorst = i === worstTBlockIdx && fpct !== null;
+            const icons = ['🌅','☀️','🌆','🌙'];
+            const miniColor = isWorst ? 'var(--danger)' : 'rgba(255,107,107,0.55)';
             return `<div class="dash-time-block ${isWorst ? 'worst' : ''}">
+              <div class="dash-time-icon">${icons[i]}</div>
               <div class="dash-time-pct ${fpct === null ? 'muted' : 'fail'}">${fpct !== null ? fpct + '%' : '—'}</div>
-              <div class="dash-time-label">${b.label}${isWorst ? ' ⚠️' : ''}</div>
+              <div class="dash-time-label">${b.label}</div>
               <div class="dash-time-range">${b.range}</div>
+              ${fpct !== null ? `<div class="dash-time-mini-bar"><div class="dash-time-mini-fill" style="width:${fpct}%;background:${miniColor};animation-delay:${i*0.1}s;"></div></div>` : ''}
             </div>`;
           }).join('')}
         </div>
@@ -2306,22 +2334,22 @@ function renderDashboard() {
 
   // 5. Atividades que mais falho
   html += `<div class="dash-section">
-    <div class="dash-section-title">⚠️ Atividades que mais falho</div>
+    <div class="dash-section-title">Atividades que mais falho</div>
     ${failedTasks.length === 0
       ? `<div class="empty-state" style="padding:16px 0;">
            <div class="icon" style="font-size:1.6rem;margin-bottom:8px;">🌱</div>
            <div class="empty-state-title" style="font-size:0.9rem;">Nada a apontar ainda.</div>
            <p class="empty-state-sub">Continue usando por alguns dias e seus padrões vão aparecer aqui.</p>
          </div>`
-      : failedTasks.map(t => `
+      : failedTasks.map((t, idx) => `
           <div class="dash-fail-item">
-            <div class="dash-fail-info">
+            <div class="dash-fail-header">
               <div class="dash-fail-name">${t.name}</div>
-              ${t.cat ? `<span class="cat-tag cat-${t.cat}" style="margin-top:2px;">${catLabel(t.cat)}</span>` : ''}
-            </div>
-            <div class="dash-fail-bar-wrap">
-              <div class="dash-fail-bar-bg"><div class="dash-fail-bar" style="width:${t.failRate}%;"></div></div>
+              ${t.cat ? `<span class="cat-tag cat-${t.cat}" style="flex-shrink:0;margin-top:0;">${catLabel(t.cat)}</span>` : ''}
               <div class="dash-fail-pct">${t.failRate}%</div>
+            </div>
+            <div class="dash-fail-bar-bg">
+              <div class="dash-fail-bar" style="width:${t.failRate}%;animation-delay:${idx*0.08}s;"></div>
             </div>
           </div>`).join('')
     }
