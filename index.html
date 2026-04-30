@@ -591,9 +591,21 @@
     padding: 40px 20px;
     color: var(--muted);
   }
-
-  .empty-state .icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .empty-state .icon { font-size: 2.5rem; margin-bottom: 14px; }
   .empty-state p { font-size: 0.85rem; line-height: 1.6; }
+  .empty-state-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .empty-state-sub {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
 
   .toggle-add { display: none; }
   .toggle-add.show { display: block; }
@@ -1319,6 +1331,58 @@
   }
   .focus-setup { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 320px; }
   .focus-running { display: none; flex-direction: column; align-items: center; }
+
+  /* DASHBOARD REDESIGN */
+  .dash-section { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
+  .dash-section-title { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 14px; }
+  .dash-section-note { font-size: 0.68rem; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+
+  /* overview cards */
+  .dash-overview { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .dash-ov-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 16px; }
+  .dash-ov-value { font-family: 'Fraunces', serif; font-size: 2.2rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 4px; }
+  .dash-ov-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* calendar */
+  .dash-cal-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-bottom: 10px; }
+  .dash-cal-day { aspect-ratio: 1; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.52rem; font-family: 'DM Sans', sans-serif; }
+  .dash-cal-legend { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+  .dash-cal-legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.62rem; color: var(--muted); }
+  .dash-cal-legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+  /* weekday bars */
+  .dash-wd-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .dash-wd-label { width: 28px; font-size: 0.72rem; color: var(--muted); flex-shrink: 0; }
+  .dash-wd-bar-wrap { flex: 1; height: 22px; background: var(--surface2); border-radius: 6px; overflow: hidden; }
+  .dash-wd-bar { height: 100%; border-radius: 6px; transition: width 0.6s ease; }
+  .dash-wd-pct { width: 36px; text-align: right; font-size: 0.72rem; color: var(--muted); flex-shrink: 0; }
+
+  /* time blocks */
+  .dash-time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .dash-time-block { background: var(--surface2); border-radius: 10px; padding: 14px 10px; text-align: center; border: 1px solid transparent; }
+  .dash-time-block.best { border-color: var(--accent); }
+  .dash-time-pct { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--accent); line-height: 1; }
+  .dash-time-pct.muted { color: var(--muted); font-size: 1.2rem; }
+  .dash-time-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
+  .dash-time-range { font-size: 0.6rem; color: var(--muted); margin-top: 2px; opacity: 0.7; }
+
+  /* failed tasks */
+  .dash-fail-item { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .dash-fail-info { flex: 1; min-width: 0; }
+  .dash-fail-name { font-size: 0.85rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
+  .dash-fail-bar-wrap { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .dash-fail-bar-bg { width: 72px; height: 5px; background: var(--surface2); border-radius: 3px; }
+  .dash-fail-bar { height: 100%; border-radius: 3px; background: var(--danger); }
+  .dash-fail-pct { font-size: 0.75rem; color: var(--danger); width: 34px; text-align: right; flex-shrink: 0; }
+
+  /* insights */
+  .dash-insight-card { background: var(--surface2); border-radius: 10px; padding: 14px; margin-bottom: 10px; font-size: 0.85rem; color: var(--text); line-height: 1.7; }
+  .dash-insight-hl { color: var(--accent); font-weight: 500; }
+
+  /* quando falha */
+  .dash-fail-sub-label { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+  .dash-time-block.worst { border-color: var(--danger); }
+  .dash-time-pct.fail { color: var(--danger); }
 </style>
 </head>
 <body>
@@ -1412,40 +1476,7 @@
 
 <!-- VIEW: DASHBOARD -->
 <div class="view" id="view-dashboard">
-  <div class="dash-grid">
-    <div class="dash-card">
-      <div class="dash-metric" id="dashHoje">0%</div>
-      <div class="dash-metric-label">Hoje</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-metric" id="dashStreak">0</div>
-      <div class="dash-metric-label">Dias seguidos 🔥</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-metric" id="dashSemana">0</div>
-      <div class="dash-metric-label">Dias completos essa semana</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-metric" id="dashMedia">0%</div>
-      <div class="dash-metric-label">Média da semana</div>
-    </div>
-    <div class="dash-card full">
-      <div class="section-title" style="margin-bottom:8px;">Semana atual</div>
-      <div class="week-grid" id="weekGrid"></div>
-    </div>
-    <div class="dash-card full">
-      <div class="section-title" style="margin-bottom:8px;">Últimos 14 dias</div>
-      <div class="streak-row" id="streakRow"></div>
-    </div>
-    <div class="dash-card full">
-      <div class="section-title" style="margin-bottom:4px;">⚠️ Onde falho mais <span style="font-size:0.65rem;color:var(--muted);font-weight:300;text-transform:none;letter-spacing:0;">(últimos 30 dias)</span></div>
-      <div class="weakness-list" id="weaknessList"></div>
-    </div>
-    <div class="dash-card full">
-      <div class="section-title" style="margin-bottom:4px;">📊 Por categoria <span style="font-size:0.65rem;color:var(--muted);font-weight:300;text-transform:none;letter-spacing:0;">(últimos 30 dias)</span></div>
-      <div class="cat-stats-grid" id="catStatsGrid"></div>
-    </div>
-  </div>
+  <div id="dashboardContent"></div>
 </div>
 
 <!-- VIEW: SEMANA -->
@@ -1702,6 +1733,51 @@ function renderDate() {
   document.getElementById('navDate').textContent = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
 }
 
+// ===== EMPTY STATES =====
+function getTodayEmptyState() {
+  const h = new Date().getHours();
+  const name = state.userName ? `, ${state.userName}` : '';
+  let icon, title, sub;
+  if (h >= 5 && h < 12) {
+    icon = '🌅';
+    title = `Bom dia${name}.`;
+    sub = 'O que você quer conquistar hoje?';
+  } else if (h >= 12 && h < 18) {
+    icon = '☀️';
+    title = 'A tarde ainda está em aberto.';
+    sub = 'Que tal definir o que falta fazer?';
+  } else if (h >= 18 && h < 22) {
+    icon = '🌙';
+    title = `Boa noite${name}.`;
+    sub = 'Ainda dá tempo de planejar o que precisa ser feito.';
+  } else {
+    icon = '✨';
+    title = 'Ainda acordado?';
+    sub = 'Planeje amanhã enquanto a cabeça está fresca.';
+  }
+  return `<div class="empty-state">
+    <div class="icon">${icon}</div>
+    <div class="empty-state-title">${title}</div>
+    <p class="empty-state-sub">${sub}</p>
+  </div>`;
+}
+
+function getWeekEmptyState(label) {
+  const frases = [
+    'O que você quer que esse dia seja?',
+    'Planejar agora é cuidar do seu eu de amanhã.',
+    'Um dia bem planejado começa aqui.',
+    'Cada tarefa aqui é uma intenção.',
+    'Ainda em branco — e isso é uma oportunidade.',
+  ];
+  const frase = frases[weekCursor % frases.length];
+  return `<div class="empty-state">
+    <div class="icon">📅</div>
+    <div class="empty-state-title">${label} em aberto.</div>
+    <p class="empty-state-sub">${frase}</p>
+  </div>`;
+}
+
 // ===== TASKS =====
 function getTodayTasks() {
   ensureToday();
@@ -1713,7 +1789,7 @@ function renderTasks() {
   const list = document.getElementById('tasksList');
   
   if (tasks.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="icon">📋</div><p>Nenhuma tarefa ainda.<br>Adicione tarefas ou configure sua rotina padrão.</p></div>`;
+    list.innerHTML = getTodayEmptyState();
     updateProgress(0, 0);
     return;
   }
@@ -2023,131 +2099,245 @@ function selectCat(btn, scope) {
 
 // ===== DASHBOARD =====
 function renderDashboard() {
-  const { tasks, completed } = getTodayTasks();
-  const todayPct = tasks.length === 0 ? 0 : Math.round((completed.length / tasks.length) * 100);
-  document.getElementById('dashHoje').textContent = todayPct + '%';
-
-  // Week days
   const now = new Date();
-  const weekData = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(now);
-    d.setDate(d.getDate() - i);
+  const todayKey = getToday();
+  const months = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  const DAYS_FULL = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+  // ── coleta 30 dias ──
+  const days30 = [];
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(now); d.setDate(d.getDate() - i);
     const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-    const dayData = state.days && state.days[key];
-    let pct = 0;
-    if (dayData && dayData.tasks.length > 0) {
-      pct = Math.round((dayData.completed.length / dayData.tasks.length) * 100);
-    }
-    weekData.push({ label: DAYS[d.getDay()], pct, full: pct === 100 });
+    const dd = state.days && state.days[key];
+    let pct = null;
+    if (dd && dd.tasks && dd.tasks.length > 0)
+      pct = Math.round(((dd.completed || []).length / dd.tasks.length) * 100);
+    days30.push({ key, d, pct });
   }
 
-  document.getElementById('weekGrid').innerHTML = weekData.map(d => `
-    <div class="week-day">
-      <div class="week-day-label">${d.label}</div>
-      <div class="week-day-bar-bg">
-        <div class="week-day-bar-fill" style="height:${d.pct}%"></div>
-      </div>
-      <div class="week-day-pct">${d.pct}%</div>
-    </div>
-  `).join('');
-
-  const completeDays = weekData.filter(d => d.full).length;
-  document.getElementById('dashSemana').textContent = completeDays;
-
-  const avg = weekData.length ? Math.round(weekData.reduce((s, d) => s + d.pct, 0) / weekData.length) : 0;
-  document.getElementById('dashMedia').textContent = avg + '%';
-
-  // Streak
-  let streak = 0;
+  // ── média 30 dias + streak ──
+  const withData = days30.filter(x => x.pct !== null);
+  const avg30 = withData.length ? Math.round(withData.reduce((s, x) => s + x.pct, 0) / withData.length) : 0;
   const fullDays = state.fullDays || [];
+  let streak = 0;
   for (let i = 0; i < 365; i++) {
-    const d = new Date(now);
-    d.setDate(d.getDate() - i);
-    const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-    if (fullDays.includes(key)) streak++;
-    else break;
+    const d = new Date(now); d.setDate(d.getDate() - i);
+    const k = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    if (fullDays.includes(k)) streak++; else break;
   }
-  document.getElementById('dashStreak').textContent = streak;
 
-  // Weakness: last 30 days task completion rate
-  const taskStats = {}; // taskName -> { done, total }
-  const now2 = new Date();
+  // ── produtividade por dia da semana (60 dias) ──
+  const wdStats = Array(7).fill(null).map(() => ({ sum: 0, n: 0 }));
+  for (let i = 0; i < 60; i++) {
+    const d = new Date(now); d.setDate(d.getDate() - i);
+    const k = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    const dd = state.days && state.days[k];
+    if (!dd || !dd.tasks || dd.tasks.length === 0) continue;
+    wdStats[d.getDay()].sum += ((dd.completed || []).length / dd.tasks.length) * 100;
+    wdStats[d.getDay()].n++;
+  }
+  const wdAvgs = wdStats.map(s => s.n > 0 ? Math.round(s.sum / s.n) : null);
+  const wdMax = Math.max(...wdAvgs.filter(v => v !== null), 0);
+
+  // ── blocos de horário (30 dias) ──
+  const tBlocks = [
+    { label: 'Manhã',     range: '6h – 12h',  done: 0, total: 0 },
+    { label: 'Tarde',     range: '12h – 18h', done: 0, total: 0 },
+    { label: 'Noite',     range: '18h – 22h', done: 0, total: 0 },
+    { label: 'Madrugada', range: '22h – 6h',  done: 0, total: 0 },
+  ];
   for (let i = 0; i < 30; i++) {
-    const d2 = new Date(now2);
-    d2.setDate(d2.getDate() - i);
-    const key2 = `${d2.getFullYear()}-${d2.getMonth()+1}-${d2.getDate()}`;
-    const dayData2 = state.days && state.days[key2];
-    if (!dayData2 || !dayData2.tasks || dayData2.tasks.length === 0) continue;
-    dayData2.tasks.forEach((t, idx) => {
-      const n = t.name;
-      if (!taskStats[n]) taskStats[n] = { done: 0, total: 0 };
-      taskStats[n].total++;
-      if (dayData2.completed.includes(idx)) taskStats[n].done++;
+    const d = new Date(now); d.setDate(d.getDate() - i);
+    const k = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    const dd = state.days && state.days[k];
+    if (!dd || !dd.tasks) continue;
+    dd.tasks.forEach((t, idx) => {
+      if (!t.time) return;
+      const h = parseInt(t.time.split(':')[0]);
+      const b = h >= 6 && h < 12 ? 0 : h >= 12 && h < 18 ? 1 : h >= 18 && h < 22 ? 2 : 3;
+      tBlocks[b].total++;
+      if ((dd.completed || []).includes(idx)) tBlocks[b].done++;
     });
   }
-  const weaknessList = Object.entries(taskStats)
+  const hasTimeData = tBlocks.some(b => b.total >= 2);
+  const tBlockFailPcts = tBlocks.map(b => b.total >= 2 ? Math.round(((b.total - b.done) / b.total) * 100) : null);
+  const worstTBlockIdx = tBlockFailPcts.reduce((wi, v, i) => (v !== null && (wi === -1 || v > tBlockFailPcts[wi])) ? i : wi, -1);
+
+  const wdFailPcts = wdAvgs.map(v => v !== null ? 100 - v : null);
+  const worstWdIdx = wdFailPcts.reduce((wi, v, i) => (v !== null && (wi === -1 || v > wdFailPcts[wi])) ? i : wi, -1);
+
+  // ── atividades que mais falho (30 dias) ──
+  const tStats = {};
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(now); d.setDate(d.getDate() - i);
+    const k = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    const dd = state.days && state.days[k];
+    if (!dd || !dd.tasks) continue;
+    dd.tasks.forEach((t, idx) => {
+      if (!tStats[t.name]) tStats[t.name] = { done: 0, total: 0, cat: t.cat };
+      tStats[t.name].total++;
+      if ((dd.completed || []).includes(idx)) tStats[t.name].done++;
+    });
+  }
+  const failedTasks = Object.entries(tStats)
     .filter(([, v]) => v.total >= 3)
-    .map(([name, v]) => ({ name, pct: Math.round((v.done / v.total) * 100) }))
-    .sort((a, b) => a.pct - b.pct)
+    .map(([name, v]) => ({ name, failRate: Math.round(((v.total - v.done) / v.total) * 100), cat: v.cat }))
+    .sort((a, b) => b.failRate - a.failRate)
     .slice(0, 5);
 
-  const weakEl = document.getElementById('weaknessList');
-  if (weaknessList.length === 0) {
-    weakEl.innerHTML = `<div style="font-size:0.8rem;color:var(--muted);padding:10px 0;">Dados insuficientes ainda. Use o app por alguns dias! 🌱</div>`;
-  } else {
-    weakEl.innerHTML = weaknessList.map(w => `
-      <div class="weakness-item">
-        <div class="weakness-name">${w.name}</div>
-        <div class="weakness-bar-bg"><div class="weakness-bar-fill" style="width:${w.pct}%"></div></div>
-        <div class="weakness-pct">${w.pct}%</div>
-      </div>
-    `).join('');
+  // ── correlações com check-in ──
+  const insights = [];
+  if (state.checkins) {
+    const byEnergy = [[], [], [], [], []]; // índice 0-4 = energia 1-5
+    const bySleep   = { low: [], ok: [], good: [] };
+    for (let i = 1; i < 30; i++) {
+      const d = new Date(now); d.setDate(d.getDate() - i);
+      const k = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+      const ci = state.checkins[k];
+      const dd = state.days && state.days[k];
+      if (!ci || !dd || !dd.tasks || dd.tasks.length === 0) continue;
+      const pct = ((dd.completed || []).length / dd.tasks.length) * 100;
+      if (ci.energy >= 1 && ci.energy <= 5) byEnergy[ci.energy - 1].push(pct);
+      if (ci.sleep != null) {
+        if (ci.sleep < 6) bySleep.low.push(pct);
+        else if (ci.sleep < 7) bySleep.ok.push(pct);
+        else bySleep.good.push(pct);
+      }
+    }
+    const avg = arr => arr.length >= 3 ? Math.round(arr.reduce((s, v) => s + v, 0) / arr.length) : null;
+    const lowE  = avg([...byEnergy[0], ...byEnergy[1]]);
+    const highE = avg([...byEnergy[3], ...byEnergy[4]]);
+    if (lowE !== null && highE !== null && Math.abs(highE - lowE) >= 10)
+      insights.push(highE > lowE
+        ? `Com energia alta você conclui em média <span class="dash-insight-hl">${highE}%</span> das tarefas — cai para ${lowE}% quando está sem energia.`
+        : `Sua performance é consistente independente da energia: ${highE}% quando disposto vs ${lowE}% sem energia.`);
+    const slLow  = avg(bySleep.low);
+    const slGood = avg(bySleep.good);
+    if (slLow !== null && slGood !== null && Math.abs(slGood - slLow) >= 10)
+      insights.push(slGood > slLow
+        ? `Com ≥7h de sono você produz <span class="dash-insight-hl">${slGood}%</span> — com menos de 6h cai para ${slLow}%.`
+        : `Seu desempenho resiste ao sono curto: ${slGood}% com descanso vs ${slLow}% com pouco sono.`);
   }
 
-  // Category stats: last 30 days
-  const catData = {}; // cat -> { done, total }
-  for (let i = 0; i < 30; i++) {
-    const d3 = new Date(now2);
-    d3.setDate(d3.getDate() - i);
-    const key3 = `${d3.getFullYear()}-${d3.getMonth()+1}-${d3.getDate()}`;
-    const dayData3 = state.days && state.days[key3];
-    if (!dayData3 || !dayData3.tasks || dayData3.tasks.length === 0) continue;
-    dayData3.tasks.forEach((t, idx) => {
-      const c = t.cat || 'outro';
-      if (!catData[c]) catData[c] = { done: 0, total: 0 };
-      catData[c].total++;
-      if (dayData3.completed.includes(idx)) catData[c].done++;
-    });
+  // ── helper de cor do calendário ──
+  function calColor(pct) {
+    if (pct === null) return 'var(--surface2)';
+    if (pct === 100)  return 'var(--accent)';
+    if (pct >= 75)    return 'rgba(150,220,80,0.55)';
+    if (pct >= 50)    return 'rgba(240,208,96,0.5)';
+    if (pct > 0)      return 'rgba(240,160,96,0.5)';
+    return 'rgba(255,107,107,0.45)';
   }
-  const catEl = document.getElementById('catStatsGrid');
-  const catEntries = Object.entries(catData).sort((a, b) => b[1].total - a[1].total);
-  if (catEntries.length === 0) {
-    catEl.innerHTML = `<div style="font-size:0.8rem;color:var(--muted);padding:10px 0;">Adicione categorias às suas tarefas para ver estatísticas aqui 🏷️</div>`;
-  } else {
-    catEl.innerHTML = catEntries.map(([cat, v]) => {
-      const pct = Math.round((v.done / v.total) * 100);
-      const color = CAT_COLORS[cat] || '#b48cf0';
-      return `
-        <div class="cat-stat-row">
-          <div class="cat-stat-label"><span class="cat-tag cat-${cat}">${catLabel(cat)}</span></div>
-          <div class="cat-stat-bar-bg"><div class="cat-stat-bar-fill" style="width:${pct}%;background:${color};opacity:0.8;"></div></div>
-          <div class="cat-stat-pct">${pct}%</div>
+
+  // ── render ──
+  let html = '';
+
+  // 1. Overview
+  html += `<div class="dash-overview">
+    <div class="dash-ov-card">
+      <div class="dash-ov-value">${avg30}%</div>
+      <div class="dash-ov-label">Média 30 dias</div>
+    </div>
+    <div class="dash-ov-card">
+      <div class="dash-ov-value">${streak}${streak > 0 ? ' 🔥' : ''}</div>
+      <div class="dash-ov-label">Sequência atual</div>
+    </div>
+  </div>`;
+
+  // 2. Calendário 30 dias
+  html += `<div class="dash-section">
+    <div class="dash-section-title">Histórico — últimos 30 dias</div>
+    <div class="dash-cal-grid">
+      ${days30.map(({ d, pct, key }) => {
+        const color = calColor(pct);
+        const textColor = pct !== null && pct > 0 ? 'rgba(0,0,0,0.4)' : 'var(--muted)';
+        const outline = key === todayKey ? 'outline:2px solid var(--accent);outline-offset:1px;' : '';
+        const title = `${d.getDate()} ${months[d.getMonth()]} — ${pct !== null ? pct + '%' : 'sem dados'}`;
+        return `<div class="dash-cal-day" style="background:${color};${outline}" title="${title}">
+          <span style="color:${textColor};">${d.getDate()}</span>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="dash-cal-legend">
+      <div class="dash-cal-legend-item"><div class="dash-cal-legend-dot" style="background:rgba(255,107,107,0.45);"></div><span>Abaixo de 50%</span></div>
+      <div class="dash-cal-legend-item"><div class="dash-cal-legend-dot" style="background:rgba(240,208,96,0.5);"></div><span>50–74%</span></div>
+      <div class="dash-cal-legend-item"><div class="dash-cal-legend-dot" style="background:rgba(150,220,80,0.55);"></div><span>75–99%</span></div>
+      <div class="dash-cal-legend-item"><div class="dash-cal-legend-dot" style="background:var(--accent);"></div><span>100%</span></div>
+    </div>
+  </div>`;
+
+  // 3. Quando você mais falha (dia da semana + horário)
+  html += `<div class="dash-section">
+    <div class="dash-section-title">Quando você mais falha?</div>
+
+    <div class="dash-fail-sub-label">Por dia da semana</div>
+    ${DAYS_FULL.map((label, i) => {
+      const v = wdFailPcts[i];
+      const isWorst = i === worstWdIdx;
+      const barColor = isWorst ? 'var(--danger)' : 'rgba(255,107,107,0.28)';
+      return `<div class="dash-wd-row">
+        <div class="dash-wd-label" style="${isWorst ? 'color:var(--danger);font-weight:500;' : ''}">${label}</div>
+        <div class="dash-wd-bar-wrap">
+          <div class="dash-wd-bar" style="width:${v !== null ? v : 0}%;background:${barColor};"></div>
         </div>
-      `;
-    }).join('');
+        <div class="dash-wd-pct" style="${isWorst ? 'color:var(--danger);' : ''}">${v !== null ? v + '%' : '—'}</div>
+      </div>`;
+    }).join('')}
+
+    <div class="dash-fail-sub-label" style="margin-top:18px;">Por horário do dia</div>
+    ${hasTimeData
+      ? `<div class="dash-time-grid">
+          ${tBlocks.map((b, i) => {
+            const fpct = tBlockFailPcts[i];
+            const isWorst = i === worstTBlockIdx && fpct !== null;
+            return `<div class="dash-time-block ${isWorst ? 'worst' : ''}">
+              <div class="dash-time-pct ${fpct === null ? 'muted' : 'fail'}">${fpct !== null ? fpct + '%' : '—'}</div>
+              <div class="dash-time-label">${b.label}${isWorst ? ' ⚠️' : ''}</div>
+              <div class="dash-time-range">${b.range}</div>
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="dash-section-note">Taxa de não conclusão por período. Baseado em tarefas com horário definido — últimos 30 dias.</div>`
+      : `<div style="font-size:0.8rem;color:var(--muted);padding:4px 0 2px;line-height:1.7;">Adicione horários nas suas tarefas para ver em qual período do dia você mais deixa atividades sem concluir.</div>`
+    }
+    <div class="dash-section-note" style="margin-top:10px;">Dias sem registro aparecem como —. Baseado nos últimos 60 dias.</div>
+  </div>`;
+
+  // 5. Atividades que mais falho
+  html += `<div class="dash-section">
+    <div class="dash-section-title">⚠️ Atividades que mais falho</div>
+    ${failedTasks.length === 0
+      ? `<div class="empty-state" style="padding:16px 0;">
+           <div class="icon" style="font-size:1.6rem;margin-bottom:8px;">🌱</div>
+           <div class="empty-state-title" style="font-size:0.9rem;">Nada a apontar ainda.</div>
+           <p class="empty-state-sub">Continue usando por alguns dias e seus padrões vão aparecer aqui.</p>
+         </div>`
+      : failedTasks.map(t => `
+          <div class="dash-fail-item">
+            <div class="dash-fail-info">
+              <div class="dash-fail-name">${t.name}</div>
+              ${t.cat ? `<span class="cat-tag cat-${t.cat}" style="margin-top:2px;">${catLabel(t.cat)}</span>` : ''}
+            </div>
+            <div class="dash-fail-bar-wrap">
+              <div class="dash-fail-bar-bg"><div class="dash-fail-bar" style="width:${t.failRate}%;"></div></div>
+              <div class="dash-fail-pct">${t.failRate}%</div>
+            </div>
+          </div>`).join('')
+    }
+    ${failedTasks.length > 0 ? `<div class="dash-section-note">Taxa de não conclusão nos últimos 30 dias. Apenas tarefas com ≥ 3 aparições.</div>` : ''}
+  </div>`;
+
+  // 6. Por que estou falhando (correlações)
+  if (insights.length > 0) {
+    html += `<div class="dash-section">
+      <div class="dash-section-title">💡 Por que você falha?</div>
+      ${insights.map(t => `<div class="dash-insight-card">${t}</div>`).join('')}
+      <div class="dash-section-note">Correlações entre check-in matinal e taxa de conclusão nos últimos 30 dias.</div>
+    </div>`;
   }
 
-  // Last 14 days dots
-  const dots = [];
-  for (let i = 13; i >= 0; i--) {
-    const d = new Date(now);
-    d.setDate(d.getDate() - i);
-    const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-    const hit = fullDays.includes(key);
-    dots.push(`<div class="streak-dot ${hit ? 'hit' : ''}" title="${key}">${hit ? '✓' : DAYS[d.getDay()][0]}</div>`);
-  }
-  document.getElementById('streakRow').innerHTML = dots.join('');
+  document.getElementById('dashboardContent').innerHTML = html;
 }
 
 // ===== SUGGESTION (yesterday's tasks) =====
@@ -2244,7 +2434,7 @@ function renderWeekView() {
   const dayData = getWeekDayData(current.key);
   const list = document.getElementById('weekTasksList');
   if (dayData.tasks.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="icon">📅</div><p>Nenhuma tarefa planejada para ${current.label}.<br>Adicione tarefas para este dia.</p></div>`;
+    list.innerHTML = getWeekEmptyState(current.label);
     return;
   }
   list.innerHTML = dayData.tasks.map((t, i) => {
