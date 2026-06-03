@@ -1398,11 +1398,11 @@
 
 <div class="tabs-scroll">
   <div class="tabs">
-    <button class="tab active" onclick="showTab('hoje')">Hoje</button>
-    <button class="tab" onclick="showTab('semana')">Semana</button>
-    <button class="tab" onclick="showTab('dashboard')">Dashboard</button>
-    <button class="tab" onclick="showTab('config')">Configurar</button>
-    <button class="tab" onclick="showTab('checkin')">Manhã</button>
+    <button class="tab active" onclick="showTab('hoje', this)">Hoje</button>
+    <button class="tab" onclick="showTab('semana', this)">Semana</button>
+    <button class="tab" onclick="showTab('dashboard', this)">Dashboard</button>
+    <button class="tab" onclick="showTab('config', this)">Configurar</button>
+    <button class="tab" onclick="showTab('checkin', this)">Manhã</button>
   </div>
 </div>
 
@@ -1447,8 +1447,8 @@
   </div>
 
   <div class="add-task-area toggle-add" id="addTodayArea">
-    <input type="text" id="newTaskName" placeholder="Ex: Ler por 20 minutos" />
-    <input type="text" id="newTaskTime" placeholder="Horário (opcional, ex: 07:00)" />
+    <input type="text" id="newTaskName" placeholder="Ex: Ler por 20 minutos" onkeydown="if(event.key==='Enter'){event.preventDefault();addTask();}" />
+    <input type="text" id="newTaskTime" placeholder="Horário (opcional, ex: 07:00)" onkeydown="if(event.key==='Enter'){event.preventDefault();addTask();}" />
     <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Categoria</div>
     <div class="cat-select-row" id="todayCatRow">
       <button class="cat-btn" data-cat="saude" onclick="selectCat(this,'today')">🌿 Saúde</button>
@@ -1501,8 +1501,8 @@
   </div>
 
   <div class="add-task-area toggle-add" id="addWeekArea">
-    <input type="text" id="weekTaskName" placeholder="Ex: Reunião com equipe" />
-    <input type="text" id="weekTaskTime" placeholder="Horário (opcional, ex: 09:00)" />
+    <input type="text" id="weekTaskName" placeholder="Ex: Reunião com equipe" onkeydown="if(event.key==='Enter'){event.preventDefault();addWeekTask();}" />
+    <input type="text" id="weekTaskTime" placeholder="Horário (opcional, ex: 09:00)" onkeydown="if(event.key==='Enter'){event.preventDefault();addWeekTask();}" />
     <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Categoria</div>
     <div class="cat-select-row" id="weekCatRow">
       <button class="cat-btn" data-cat="saude" onclick="selectCat(this,'week')">🌿 Saúde</button>
@@ -1717,12 +1717,14 @@ function save() {
 }
 
 // ===== TABS =====
-function showTab(tab) {
+function showTab(tab, el) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById('view-' + tab).classList.add('active');
-  event.target.classList.add('active');
-  event.target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  if (el) {
+    el.classList.add('active');
+    el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }
   if (tab === 'dashboard') renderDashboard();
   if (tab === 'config') { renderDefaultTasks(); renderNotifSettings(); }
   if (tab === 'semana') renderWeekView();
@@ -1856,8 +1858,9 @@ function startEditTask(e, i) {
   e.stopPropagation();
   const { tasks } = getTodayTasks();
   const t = tasks[i];
+  const CAT_ICONS = { saude: '🌿', trabalho: '💼', pessoal: '🙂', habito: '⚡', financas: '💰', estudo: '📚', outro: '•' };
   const catBtns = Object.entries(CATS).map(([key, label]) =>
-    `<button class="cat-btn${t.cat === key ? ' selected' : ''}" data-cat="${key}" onclick="selectEditCat(this)">${label}</button>`
+    `<button class="cat-btn${t.cat === key ? ' selected' : ''}" data-cat="${key}" onclick="selectEditCat(this)">${CAT_ICONS[key] || ''} ${label.replace(/^[^\s]+\s/, '')}</button>`
   ).join('');
   const prioBtns = [
     ['A','Alto impacto'], ['B','Urgente'], ['C','Baixo impacto'], ['D','Delegável'], ['E','Eliminável']
@@ -1937,20 +1940,26 @@ function addTask() {
   document.getElementById('newTaskTime').value = '';
   document.querySelectorAll('#todayCatRow .cat-btn').forEach(b => b.classList.remove('selected'));
   document.querySelectorAll('#todayPrioRow .prio-btn').forEach(b => b.classList.remove('selected'));
+  // fechar painel após adicionar
+  document.getElementById('addTodayArea').classList.remove('show');
   renderTasks();
+  showToast('Tarefa adicionada! ✓');
 }
 
+function toggleAddToday() {
+  const area = document.getElementById('addTodayArea');
+  area.classList.toggle('show');
+  if (area.classList.contains('show')) {
+    setTimeout(() => document.getElementById('newTaskName').focus(), 80);
+  }
 function resetDay() {
   if (!confirm('Zerar progresso de hoje?')) return;
   const day = getTodayTasks();
   day.completed = [];
+  state.celebratedToday = null; // permite nova celebração após reset
   save();
   renderTasks();
   document.getElementById('rewardBadge').classList.remove('show');
-}
-
-function toggleAddToday() {
-  document.getElementById('addTodayArea').classList.toggle('show');
 }
 
 // ===== PROGRESS =====
@@ -1964,15 +1973,20 @@ function updateProgress(done, total) {
 function checkReward() {
   const { tasks, completed } = getTodayTasks();
   const badge = document.getElementById('rewardBadge');
-  if (tasks.length > 0 && completed.length === tasks.length) {
+  const allDone = tasks.length > 0 && completed.length === tasks.length;
+  const alreadyCelebrated = state.celebratedToday === getToday();
+  if (allDone) {
     badge.classList.add('show');
-    celebrate();
-    if ('vibrate' in navigator) navigator.vibrate([80, 50, 80, 50, 120]);
-    // record full day
-    const today = getToday();
-    if (!state.fullDays) state.fullDays = [];
-    if (!state.fullDays.includes(today)) {
-      state.fullDays.push(today);
+    if (!alreadyCelebrated) {
+      celebrate();
+      if ('vibrate' in navigator) navigator.vibrate([80, 50, 80, 50, 120]);
+      state.celebratedToday = getToday();
+      // record full day
+      const today = getToday();
+      if (!state.fullDays) state.fullDays = [];
+      if (!state.fullDays.includes(today)) {
+        state.fullDays.push(today);
+      }
       save();
     }
   } else {
@@ -2000,11 +2014,38 @@ function celebrate() {
   setTimeout(() => c.innerHTML = '', 3000);
 }
 
+// ===== TOAST =====
+function showToast(msg, type = 'success') {
+  let toast = document.getElementById('appToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'appToast';
+    toast.style.cssText = `
+      position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+      background:var(--surface);border:1px solid var(--border);border-radius:12px;
+      padding:12px 20px;font-size:0.82rem;color:var(--text);z-index:9999;
+      opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;
+      white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,0.4);
+    `;
+    document.body.appendChild(toast);
+  }
+  if (type === 'success') toast.style.borderColor = 'var(--accent)';
+  else if (type === 'info') toast.style.borderColor = 'var(--border)';
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(20px)';
+  }, 2400);
+}
+
 // ===== USER NAME =====
 function saveUserName() {
   state.userName = document.getElementById('userNameInput').value.trim();
   save();
-  alert('Nome salvo! 👋');
+  showToast('Nome salvo! 👋');
 }
 
 // ===== PURPOSE =====
@@ -2012,7 +2053,7 @@ function savePurpose() {
   state.purpose = document.getElementById('propositoInput').value.trim();
   save();
   renderPurpose();
-  alert('Propósito salvo! 🌟');
+  showToast('Propósito salvo! 🌟');
 }
 
 function renderPurpose() {
@@ -2078,15 +2119,15 @@ function toggleAddDefault() {
 
 function applyDefaultToToday() {
   const defaults = state.defaultTasks || [];
-  if (defaults.length === 0) { alert('Adicione tarefas padrão primeiro.'); return; }
+  if (defaults.length === 0) { showToast('Adicione tarefas padrão primeiro.', 'info'); return; }
   const day = getTodayTasks();
   const existingNames = day.tasks.map(t => t.name.toLowerCase());
   const toAdd = defaults.filter(t => !existingNames.includes(t.name.toLowerCase()));
-  if (toAdd.length === 0) { alert('Todas as tarefas padrão já estão no seu dia! ✅'); return; }
+  if (toAdd.length === 0) { showToast('Tarefas padrão já estão no dia! ✅', 'info'); return; }
   day.tasks = [...day.tasks, ...JSON.parse(JSON.stringify(toAdd))];
   save();
   renderTasks();
-  alert(`${toAdd.length} tarefa${toAdd.length > 1 ? 's adicionadas' : ' adicionada'} ao seu dia! 🚀`);
+  showToast(`${toAdd.length} tarefa${toAdd.length > 1 ? 's adicionadas' : ' adicionada'}! 🚀`);
 }
 
 // ===== CATEGORIES =====
@@ -2412,7 +2453,7 @@ function dismissSuggestion() {
 }
 
 // ===== WEEK PLANNER =====
-let weekCursor = 0; // 0=Dom, 1=Seg, ... 6=Sáb
+let weekCursor = new Date().getDay(); // inicia no dia atual da semana
 
 function getWeekDates() {
   // Returns array of 7 date keys starting from Sunday of current week
@@ -2495,10 +2536,6 @@ function weekNavGoto(i) {
   renderWeekView();
 }
 
-function toggleAddWeek() {
-  document.getElementById('addWeekArea').classList.toggle('show');
-}
-
 function addWeekTask() {
   const name = document.getElementById('weekTaskName').value.trim();
   if (!name) return;
@@ -2515,10 +2552,39 @@ function addWeekTask() {
   document.getElementById('weekTaskTime').value = '';
   document.querySelectorAll('#weekCatRow .cat-btn').forEach(b => b.classList.remove('selected'));
   document.querySelectorAll('#weekPrioRow .prio-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('addWeekArea').classList.remove('show');
   renderWeekView();
+  showToast('Tarefa adicionada! ✓');
 }
 
 function deleteWeekTask(i) {
+  const name = document.getElementById('weekTaskName').value.trim();
+  if (!name) return;
+  const time = document.getElementById('weekTaskTime').value.trim();
+  const catBtn = document.querySelector('#weekCatRow .cat-btn.selected');
+  const cat = catBtn ? catBtn.dataset.cat : null;
+  const prioBtn = document.querySelector('#weekPrioRow .prio-btn.selected');
+  const prio = prioBtn ? prioBtn.dataset.prio : null;
+  const key = getWeekDayKey();
+  const dayData = getWeekDayData(key);
+  dayData.tasks.push({ name, time, cat, prio });
+  save();
+  document.getElementById('weekTaskName').value = '';
+  document.getElementById('weekTaskTime').value = '';
+  document.querySelectorAll('#weekCatRow .cat-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('#weekPrioRow .prio-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('addWeekArea').classList.remove('show');
+  renderWeekView();
+  showToast('Tarefa adicionada! ✓');
+}
+
+function toggleAddWeek() {
+  const area = document.getElementById('addWeekArea');
+  area.classList.toggle('show');
+  if (area.classList.contains('show')) {
+    setTimeout(() => document.getElementById('weekTaskName').focus(), 80);
+  }
+}
   const key = getWeekDayKey();
   const dayData = getWeekDayData(key);
   dayData.tasks.splice(i, 1);
@@ -2673,8 +2739,8 @@ function selectCheckinEnergy(btn) {
 }
 
 function saveCheckin() {
-  if (!checkinMood) { alert('Selecione seu humor!'); return; }
-  if (!checkinEnergy) { alert('Selecione seu nível de energia!'); return; }
+  if (!checkinMood) { showToast('Selecione seu humor!', 'info'); return; }
+  if (!checkinEnergy) { showToast('Selecione seu nível de energia!', 'info'); return; }
   const sleepVal = document.getElementById('checkinSleep').value;
   const sleep = sleepVal !== '' ? parseFloat(sleepVal) : null;
   const gratitude = document.getElementById('checkinGratitude').value.trim() || null;
@@ -2964,7 +3030,8 @@ function renderGateway() {
   html += `
     <div class="gateway-section">
       <div class="gateway-section-label">${gatewaySuggestions.length > 0 ? 'Algo mais?' : 'O que você precisa fazer hoje?'}</div>
-      <input class="gateway-extra-input" type="text" id="gatewayExtraInput" placeholder="+ o que mais você precisa fazer hoje?" />
+      <input class="gateway-extra-input" type="text" id="gatewayExtraInput" placeholder="+ o que mais você precisa fazer hoje?"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();confirmGateway();}" />
     </div>`;
 
   document.getElementById('gatewayBody').innerHTML = html;
